@@ -6,6 +6,7 @@
   let currentEntry = $derived($cards[$currentCardIndex]);
   let currentCard = $derived(currentEntry?.card);
 
+  //submit a clue on card button.
   function handleSubmit() {
     if (clueText.trim() && currentEntry) {
       submitClue($roomId, currentEntry.card_id, clueText.trim());

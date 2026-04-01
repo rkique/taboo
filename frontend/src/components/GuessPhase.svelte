@@ -22,6 +22,7 @@
     }
   }
 
+  //User selects a card out of the dropdown.
   function selectWord(cardId, word) {
     guessTexts[cardId] = word;
     showDropdowns[cardId] = false;
@@ -29,6 +30,7 @@
     guessTexts[cardId] = "";
   }
 
+  //User inputs text.
   function handleInput(cardId) {
     showDropdowns[cardId] = (guessTexts[cardId] || "").trim().length > 0;
   }

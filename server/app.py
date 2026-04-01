@@ -13,7 +13,7 @@ app = Flask(__name__, static_folder=DIST_DIR, static_url_path="")
 app.config["SECRET_KEY"] = config.SECRET_KEY
 #Allow CORS from all origins
 CORS(app, resources={r"/*": {"origins": "*"}})
-socketio = SocketIO(app, cors_allowed_origins="*", async_mode="eventlet")
+socketio = SocketIO(app, cors_allowed_origins="*", async_mode="gevent")
 
 CARDS = load_cards()
 print(f"Loaded {len(CARDS)} taboo cards.")
