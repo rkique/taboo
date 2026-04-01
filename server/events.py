@@ -273,15 +273,18 @@ def register(socketio):
             }, room=room_id)
 
             # Check if all guessable cards are claimed
-            if DEBUG_MODE:
-                # In debug mode, own cards don't need to be claimed
-                real_sids = set(s for s in room["players"] if s not in room.get("bots", []))
-                guessable = [cc for cc in room["canvas_cards"]
-                             if cc["owner_sid"] not in real_sids]
-                all_claimed = len(guessable) > 0 and all(
-                    cc["card_id"] in room["card_claims"] for cc in guessable)
-            else:
-                all_claimed = len(room["card_claims"]) == len(room["canvas_cards"])
+            # A card is guessable if at least one player exists who doesn't own it
+            bot_sids = set(room.get("bots", []))
+            real_sids = set(s for s in room["players"] if s not in bot_sids)
+            guessable = []
+            for cc in room["canvas_cards"]:
+                owner = cc["owner_sid"]
+                if DEBUG_MODE and len(real_sids) == 1 and owner in real_sids:
+                    # Single real player can't guess their own cards — skip
+                    continue
+                guessable.append(cc)
+            all_claimed = len(guessable) > 0 and all(
+                cc["card_id"] in room["card_claims"] for cc in guessable)
             if all_claimed:
                 room["state"] = "finished"
                 final_scores = []
