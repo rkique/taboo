@@ -1,7 +1,7 @@
 # T@b00
 
 A real-time multiplayer word-guessing game inspired by Taboo. This is more party-gamesque than we'd typically like, but has more potential for liftoff.
-<img src="taboo_original.jpg" width="600">
+<img src="taboo_original.jpg" width="300">
 
 ## Gameplay
 The goal of the game is to (1) write the best clues possible, and (2) guess the clues well. When writing guesses, you cannot use the word or a set of related taboo words. Aim for overall gameplay to be 3-5 minutes.
