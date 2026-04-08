@@ -20,7 +20,6 @@ print(f"Loaded {len(CARDS)} taboo cards.")
 
 events.register(socketio)
 
-
 #Display all rooms.
 @app.route("/api/rooms")
 def list_rooms():

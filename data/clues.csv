@@ -1,0 +1,903 @@
+name,category,difficulty
+walrus,thing,medium
+basketball,thing,easy
+chalk,thing,easy
+napkin,thing,easy
+armpit,thing,medium
+menorah,thing,medium
+beehive,thing,medium
+spoon,thing,medium
+houseboat,thing,easy
+AirPods,thing,hard
+eczema,thing,hard
+bra,thing,medium
+ferret,thing,hard
+pinot grigio,thing,easy
+full moon,thing,easy
+Play-Doh,thing,medium
+T. Rex,thing,medium
+Pop-Tart,thing,medium
+tent,thing,easy
+London,place,easy
+Madagascar,place,hard
+Russia,place,easy
+Disney World,place,easy
+The Atlantic Ocean,place,easy
+The Metropolitan Museum of Art,place,hard
+Pope Francis,person,medium
+Meryl Streep,person,medium
+Mrs. Claus,person,easy
+Queen Elsa,person,medium
+George Jetson,person,hard
+Tom Hanks,person,easy
+Sully Sullenberger,person,hard
+Charlie's Angels,story,medium
+Jumanji,story,easy
+School of Rock,story,medium
+Cabaret,story,hard
+The Martian,story,hard
+The Crucible,story,hard
+Waiting for Godot,story,hard
+The Da Vinci Code,story,medium
+The Lion King,story,easy
+Kermit the Frog,person,easy
+Darth Vader,person,easy
+Michael Jordan,person,easy
+Dolly Parton,person,medium
+Oprah Winfrey,person,easy
+Taylor Swift,person,easy
+Tiger Woods,person,easy
+Paris Hilton,person,hard
+Frida Kahlo,person,medium
+Samuel L. Jackson,person,hard
+Ella Fitzgerald,person,hard
+Las Vegas,place,easy
+Bikini Bottom,place,hard
+Texas,place,medium
+Michelle Kwan,person,hard
+Alice in Wonderland,story,easy
+Maine,place,medium
+Banjo,thing,easy
+Jaws,story,easy
+Emergency Room,place,easy
+Haunted House,place,easy
+airplane,thing,medium
+cruise ship,thing,easy
+Great Pacific Garbage Patch,thing,hard
+alarm clock,thing,easy
+ball pit,thing,medium
+femur,thing,medium
+calendar,thing,medium
+bidet,thing,medium
+A Christmas Carol,story,medium
+Charlotte's Web,story,medium
+Alien,story,medium
+Back to the Future,story,easy
+Candyman,story,hard
+Dreamgirls,story,hard
+Sonic the Hedgehog,person,easy
+Freaky Friday,story,hard
+Mamma Mia!,story,hard
+Gremlins,story,medium
+The Phantom of the Opera,story,medium
+Halloween,story,medium
+Cinderella,story,easy
+Inception,story,medium
+Hamlet,story,easy
+Ocean's Eleven,story,medium
+Excalibur,thing,easy
+Avatar,story,easy
+Beauty and the Beast,story,easy
+Die Hard,story,medium
+The Fifth Element,story,medium
+Child's Play,story,hard
+Legally Blonde,story,easy
+Little Shop of Horrors,story,medium
+The Chronicles of Narnia,story,easy
+Mad Max,story,medium
+Charlie and the Chocolate Factory,story,easy
+Finding Nemo,story,easy
+Game of Thrones,story,easy
+Matilda,story,hard
+"Monsters, Inc.",story,easy
+Ghostbusters,story,easy
+The Golden Girls,story,medium
+Groundhog Day,story,medium
+Joker,story,easy
+Frozen,story,easy
+It,story,easy
+Noah's Ark,story,easy
+Orange Is the New Black,story,medium
+Parasite,story,hard
+Planet of the Apes,story,easy
+Psycho,story,medium
+Romeo & Juliet,story,easy
+Sleeping Beauty,story,easy
+The Terminator,story,easy
+Rocky,story,easy
+The Wizard of Oz,story,easy
+Titanic,story,easy
+Teenage Mutant Ninja Turtles,story,medium
+The Lord of The Rings,story,easy
+Rick and Morty,story,medium
+Shrek,story,easy
+Jurassic Park,story,easy
+Moana,story,hard
+Rumpelstiltskin,story,hard
+Power Rangers,story,medium
+Monty Python and the Holy Grail,story,easy
+Space Jam,story,easy
+Men in Black,story,medium
+My Fair Lady,story,medium
+Scream,story,medium
+Star Wars,story,easy
+The Good Place,story,hard
+Brooklyn,place,medium
+The Incredibles,story,easy
+Tatooine,place,hard
+zoo,place,easy
+Florida,place,medium
+Sesame Street,place,easy
+Mad Men,story,medium
+Peter Pan,story,easy
+Goldilocks and the Three Bears,story,easy
+Antarctica,place,easy
+The Princess Bride,story,medium
+Armageddon,story,medium
+Macbeth,story,medium
+Predator,story,medium
+Pride and Prejudice,story,hard
+Stranger Things,story,easy
+The Mummy,story,medium
+The Hunger Games,story,easy
+The Fresh Prince of Bel-Air,story,medium
+How the Grinch Stole Christmas,story,easy
+The Ring,story,medium
+The Thing,story,medium
+Cats,story,easy
+Snowpiercer,story,hard
+Annie,story,easy
+the underworld,place,easy
+AutoZone,place,hard
+Alaska,place,easy
+Stonehenge,place,easy
+SeaWorld,place,easy
+bowling alley,place,easy
+Starbucks,place,easy
+Snow White and the Seven Dwarfs,story,easy
+Star Trek,story,easy
+The Devil Wears Prada,story,hard
+catapult,thing,medium
+cronut,thing,hard
+fanny pack,thing,medium
+gazebo,thing,hard
+Hot Pockets,thing,medium
+lava lamp,thing,medium
+waterbed,thing,easy
+Oval Office,place,medium
+Gotham City,place,hard
+heaven,place,easy
+My Little Pony,story,easy
+The Avengers,story,easy
+Clueless,story,hard
+Jesus Christ Superstar,story,hard
+The Nightmare Before Christmas,story,medium
+Toy Story,story,easy
+The Odyssey,story,hard
+Panama Canal,place,medium
+The Raven,story,medium
+Strange Case of Dr Jekyll and Mr Hyde,story,medium
+The Breakfast Club,story,medium
+The Fast and the Furious,story,medium
+The Jungle Book,story,medium
+When Harry Met Sally...,story,hard
+Big Ben,place,easy
+Atlantis,place,medium
+Green Eggs and Ham,story,hard
+Twilight,story,easy
+Empire State Building,place,medium
+Grand Canyon,place,easy
+Transformers,story,easy
+War of the Worlds,story,medium
+Middle-earth,place,medium
+Camelot,place,hard
+The Sound of Music,story,easy
+The Hobbit,story,easy
+Top Gun,story,hard
+Will Smith,person,medium
+Serena Williams,person,easy
+Indiana Jones,person,easy
+Andy Warhol,person,hard
+Winnie the Pooh,person,medium
+Spock,person,medium
+Pikachu,person,easy
+Ms. Frizzle,person,hard
+Mother Teresa,person,medium
+1984,story,medium
+Abraham Lincoln,person,easy
+Tony the Tiger,person,medium
+Wolverine,person,medium
+Garfield,person,easy
+Agatha Christie,person,medium
+Tinkerbell,person,medium
+Julia Child,person,hard
+James Bond,person,medium
+Michael Phelps,person,medium
+Batman,person,easy
+Charlie Brown,person,medium
+Marty McFly,person,medium
+Jack the Ripper,person,medium
+Mister Rogers,person,easy
+Thor,person,hard
+Jackson Pollock,person,medium
+Grumpy Cat,person,medium
+Jesus Christ,person,easy
+William Shakespeare,person,easy
+Jim Henson,person,medium
+Tom Brady,person,medium
+Moses,person,hard
+Dwayne Johnson,person,easy
+Dracula,person,easy
+Gandalf,person,easy
+David Beckham,person,easy
+The Headless Horseman,person,hard
+Jackie Chan,person,medium
+Zelda,person,hard
+Homer Simpson,person,easy
+Guy Fieri,person,medium
+Aladdin,person,easy
+Mary Poppins,person,easy
+Scooby-Doo,person,easy
+Godzilla,person,easy
+Princess Leia,person,medium
+SpongeBob SquarePants,person,easy
+Don Quixote,person,hard
+Mark Twain,person,medium
+Mulan,person,medium
+Albert Einstein,person,easy
+Minions,person,easy
+Leonardo da Vinci,person,medium
+"20,000 Leagues Under The Sea",story,hard
+A Wrinkle in Time,story,hard
+Archie Comics,story,medium
+One Hundred and One Dalmatians,story,easy
+Adventure Time,story,medium
+Animal Farm,story,hard
+Around the World In Eighty Days,story,hard
+Ben-Hur,story,hard
+FernGully: The Last Rainforest,story,medium
+Flubber,story,medium
+Forrest Gump,story,easy
+Babe,story,easy
+Zorro,person,medium
+Bob Ross,person,medium
+Susan Boyle,person,medium
+Nancy Drew,person,medium
+Joan of Arc,person,medium
+Jeff Bezos,person,hard
+R. L. Stine,person,medium
+Curious George,person,medium
+Frosty the Snowman,person,easy
+Big Bird,person,easy
+Calvin and Hobbes,story,medium
+Edward Scissorhands,story,medium
+LeBron James,person,easy
+Gone Girl,story,hard
+Jessica Rabbit,person,medium
+Charles Darwin,person,easy
+Wreck-It Ralph,story,medium
+Edgar Allan Poe,person,medium
+Dr. Frankenstein,person,easy
+Sherlock Holmes,person,easy
+Chicago,place,medium
+Julius Caesar,person,hard
+The Princess and the Frog,story,medium
+Aristotle,person,medium
+Steamboat Willie,story,medium
+Coco,story,hard
+Hollywood,place,easy
+Good Will Hunting,story,hard
+Toni Morrison,person,hard
+Banksy,person,hard
+Wicked,story,easy
+Cheers,story,medium
+E.T. the Extra-Terrestrial,story,easy
+Goodnight Moon,story,hard
+Home Alone,story,easy
+Pinky and the Brain,story,hard
+Prince,person,hard
+Lady Gaga,person,easy
+Ronda Rousey,person,hard
+Queen Elizabeth,person,easy
+How To Train Your Dragon,story,medium
+Shaq,person,easy
+Thanos,person,medium
+Oedipus,person,hard
+Ellen Ripley,person,hard
+Wonder Woman,person,medium
+Georgia O'Keeffe,person,hard
+Edward Snowden,person,hard
+Avatar: The Last Airbender,story,medium
+Dune,story,hard
+Family Guy,story,medium
+The Metamorphosis,story,hard
+Mrs. Doubtfire,story,medium
+Free Willy,story,medium
+Friends,story,easy
+Hamilton,story,easy
+Battlestar Galactica,story,medium
+Big,story,medium
+Elvis,person,easy
+Vincent Van Gogh,person,medium
+Ratatouille,story,hard
+The Great Gatsby,story,medium
+Singin' in the Rain,story,hard
+The Birds,story,medium
+Lin-Manuel Miranda,person,medium
+Jimi Hendrix,person,hard
+Madonna,person,easy
+Britney Spears,person,easy
+George Washington,person,hard
+John F. Kennedy,person,medium
+Simone Biles,person,medium
+Jerry Seinfeld,person,easy
+Usain Bolt,person,easy
+Takeru Kobayashi,person,hard
+Walter White,person,medium
+Elmo,person,easy
+James and the Giant Peach,story,easy
+RuPaul,person,medium
+Wile E. Coyote,person,hard
+Whitney Houston,person,medium
+Tom Nook,person,hard
+Bridesmaids,story,medium
+Wayne Gretzky,person,medium
+Night of the Living Dead,story,medium
+Where the Wild Things Are,story,medium
+One Flew Over the Cuckoo's Nest,story,medium
+It's a Wonderful Life,story,medium
+Hannibal Lecter,person,medium
+Anne Hathaway,person,medium
+Beyoncé,person,easy
+Lara Croft,person,medium
+Cleopatra,person,medium
+Stephen King,person,medium
+RoboCop,person,medium
+Katniss Everdeen,person,medium
+Muhammad Ali,person,easy
+Hansel and Gretel,story,easy
+Little Red Riding Hood,story,easy
+The Baby-Sitters Club,story,medium
+Adele,person,easy
+George R. R. Martin,person,medium
+Jane Goodall,person,hard
+Don Draper,person,medium
+Bugs Bunny,person,easy
+Breaking Bad,story,hard
+Black Mirror,story,hard
+Ebenezer Scrooge,person,medium
+Snoopy,person,easy
+Mariah Carey,person,hard
+Pac-Man,person,hard
+Independence Day,story,medium
+Neon Genesis Evangelion,story,hard
+Neil Gaiman,person,hard
+Chuck E. Cheese,place,medium
+Leaning Tower Of Pisa,place,medium
+Hawaii,place,easy
+Bermuda Triangle,place,medium
+Beetlejuice,story,hard
+Tangled,story,hard
+Spirited Away,story,hard
+The Parent Trap,story,hard
+The Shining,story,medium
+IKEA,place,medium
+Betty White,person,hard
+Lizzo,person,medium
+Barbra Streisand,person,hard
+Al Capone,person,medium
+Easter Island,place,medium
+Frodo Baggins,person,medium
+Iron Man,person,easy
+George Costanza,person,medium
+Little Women,story,hard
+Buckingham Palace,place,medium
+Han Solo,person,medium
+Carrie,story,medium
+Captain Jack Sparrow,person,medium
+Marilyn Monroe,person,easy
+Michelangelo,person,medium
+Rafael Nadal,person,medium
+Popeye the Sailor,person,medium
+Samus Aran,person,hard
+Ron Burgundy,person,hard
+Ron Swanson,person,hard
+George Orwell,person,medium
+Betty Boop,person,hard
+Eve,person,medium
+Barbie,person,easy
+David Bowie,person,medium
+Elphaba,person,medium
+Atticus Finch,person,medium
+House,story,medium
+The Godfather,story,hard
+The Sandlot,story,hard
+Buffy the Vampire Slayer,story,medium
+Supernatural,story,hard
+Target,place,easy
+Panera Bread,place,hard
+King Kong,person,easy
+Tarzan,person,easy
+Sarah Palin,person,medium
+Hercule Poirot,person,medium
+Dory,person,medium
+Captain Jean-Luc Picard,person,medium
+Optimus Prime,person,medium
+Aqua Teen Hunger Force,story,medium
+Akira,story,hard
+Darkwing Duck,story,medium
+Dexter,story,medium
+Dumb and Dumber,story,medium
+Who Framed Roger Rabbit,story,medium
+Westworld,story,medium
+Ferris Bueller's Day Off,story,medium
+Mount Everest,place,easy
+Times Square,place,medium
+Legoland,place,hard
+Costco,place,hard
+Sephora,place,medium
+New Orleans,place,medium
+Dracula's Castle,place,hard
+The Louvre,place,hard
+Parthenon,place,hard
+Wendy's,place,hard
+Egypt,place,easy
+Dairy Queen,place,hard
+Dollar Tree,place,hard
+Neverland,place,medium
+Paris,place,easy
+Basement,place,medium
+Cave,place,easy
+Ancient Greece,place,medium
+King Henry VIII,person,medium
+Elizabeth Taylor,person,hard
+Blazing Saddles,story,hard
+Grey's Anatomy,story,medium
+Tasmanian Devil,person,hard
+Princess Diana,person,hard
+Kool-Aid Man,person,hard
+Pillsbury Doughboy,person,hard
+Bill Murray,person,hard
+Grease,story,medium
+Bambi,story,easy
+Sweeney Todd,story,hard
+The Addams Family,story,hard
+Diagon Alley,place,hard
+The Nile River,place,hard
+corn maze,place,easy
+Mount Rushmore,place,easy
+Up,story,easy
+A Bug's Life,story,medium
+Swan Lake,story,hard
+Despicable Me,story,medium
+Chef Boyardee,person,hard
+Mr. Peanut,person,hard
+The Midwest,place,medium
+Alfred Hitchcock,person,hard
+Robin Hood,person,easy
+Jennifer Hudson,person,hard
+Galileo Galilei,person,medium
+Mozart,person,medium
+Marie Curie,person,hard
+Citizen Kane,story,medium
+Bob Dylan,person,medium
+Rome,place,easy
+The Twilight Zone,story,medium
+Dublin,place,medium
+The Very Hungry Caterpillar,story,hard
+Inside Out,story,medium
+Zootopia,story,medium
+Friday Night Lights,story,hard
+Lord of the Flies,story,medium
+Bridget Jones's Diary,story,hard
+Amelia Earhart,person,medium
+Colonel Sanders,person,hard
+Fiddler on the Roof,story,medium
+Invasion of the Body Snatchers,story,hard
+The Naked Gun,story,medium
+Love Actually,story,medium
+Taj Mahal,place,easy
+Trix Rabbit,person,medium
+Thomas Edison,person,easy
+Sigmund Freud,person,medium
+Green M&M,person,hard
+Blockbuster,place,medium
+7-Eleven,place,hard
+Animaniacs,story,medium
+Frasier,story,medium
+Lethal Weapon,story,medium
+Memento,story,medium
+Ronald McDonald,person,easy
+Lost,story,easy
+Gritty,person,medium
+Seabiscuit,story,medium
+Energizer Bunny,person,hard
+Salvador Dalí,person,hard
+Carl Sagan,person,medium
+The Curious Case of Benjamin Button,story,medium
+Austin Powers,person,easy
+Babe Ruth,person,easy
+Chester Cheetah,person,medium
+Meghan Markle,person,medium
+Fred Flintstone,person,medium
+Neil Armstrong,person,medium
+Steve Jobs,person,easy
+Isaac Newton,person,medium
+Friedrich Nietzsche,person,hard
+Oscar Wilde,person,hard
+Dave Chappelle,person,medium
+Aretha Franklin,person,medium
+Jennifer Lopez,person,medium
+The Book of Mormon,story,hard
+Bob's Burgers,story,medium
+Donnie Darko,story,hard
+The Room,story,medium
+The Nanny,story,hard
+My Cousin Vinny,story,medium
+South Park,story,medium
+Mike Tyson,person,easy
+Megan Rapinoe,person,hard
+Spaceballs,story,medium
+Wario,person,medium
+Greta Thunberg,person,medium
+Secretariat,person,hard
+Winston Churchill,person,medium
+Martin Luther King Jr.,person,easy
+John Cena,person,medium
+Johnny Cash,person,medium
+Jolly Green Giant,person,medium
+Detective Pikachu,story,medium
+Billie Eilish,person,hard
+Anthony Bourdain,person,medium
+Futurama,story,medium
+Billie Jean King,person,hard
+Peppa Pig,story,hard
+The Blair Witch Project,story,medium
+Paddington,story,medium
+Kareem Abdul-Jabbar,person,medium
+Glengarry Glen Ross,story,hard
+True Detective,story,hard
+The Sixth Sense,story,medium
+The Hundred Acre Wood,place,hard
+Boston,place,medium
+Total Recall,story,medium
+Hocus Pocus,story,medium
+DMV,place,easy
+The Music Man,story,medium
+Sailor Moon,story,medium
+Twin Peaks,story,hard
+Casper,story,easy
+The Nutcracker,story,hard
+Thumbelina,story,hard
+X-Men,story,easy
+The Sopranos,story,hard
+King of the Hill,story,medium
+Rear Window,story,medium
+Superbad,story,medium
+The Big Bang Theory,story,easy
+The Boss Baby,story,medium
+The Magic School Bus,story,medium
+Kung Fu Panda,story,medium
+Cars,story,easy
+Parks and Recreation,story,hard
+Bee Movie,story,hard
+Count Chocula,person,hard
+Jennifer Aniston,person,medium
+Mr. Clean,person,medium
+"""Weird Al"" Yankovic",person,medium
+George Clooney,person,hard
+Switzerland,place,medium
+Baby Yoda,person,hard
+Harley Quinn,person,medium
+The Prestige,story,hard
+The Brave Little Toaster,story,medium
+Pinocchio,person,easy
+Death of a Salesman,story,medium
+Whoville,place,hard
+Asgard,place,hard
+Hot Topic,place,medium
+Home Depot,place,medium
+The Princess Diaries,story,medium
+The Fly,story,hard
+A Series of Unfortunate Events,story,medium
+The Princess and the Pea,story,hard
+Avenue Q,story,hard
+Law & Order,story,medium
+San Francisco,place,medium
+Santa's Workshop,place,medium
+Australia,place,easy
+Denzel Washington,person,medium
+Whoopi Goldberg,person,medium
+West Side Story,story,hard
+A Midsummer Night's Dream,story,hard
+Jack and the Beanstalk,story,easy
+Little Richard,person,medium
+Nicki Minaj,person,medium
+Puss In Boots,person,hard
+Robert Downey Jr.,person,medium
+Hannah Montana,person,medium
+Yo-Yo Ma,person,hard
+Maya Angelou,person,hard
+Keanu Reeves,person,hard
+Smokey Bear,person,easy
+Bradley Cooper,person,hard
+Mr. Snuffleupagus,person,hard
+Elton John,person,hard
+"Murder, She Wrote",story,hard
+Vanna White,person,hard
+The West Wing,story,medium
+The Hulk,person,medium
+I Love Lucy,story,hard
+A Chorus Line,story,medium
+Rent,story,hard
+Oklahoma!,story,medium
+Olive Garden,place,medium
+The Rocky Horror Picture Show,story,hard
+Fyre Fest,place,hard
+The Producers,story,hard
+Red Lobster,place,medium
+Les Misérables,story,medium
+Office Space,story,easy
+Diff'rent Strokes,story,hard
+ER,story,medium
+Watchmen,story,medium
+Rudolph the Red-Nosed Reindeer,person,hard
+Mariana Trench,place,medium
+Pompeii,place,medium
+Derek Jeter,person,medium
+Dale Earnhardt Jr.,person,medium
+Waterworld,story,medium
+Jane the Virgin,story,medium
+Ayn Rand,person,hard
+The Goonies,story,medium
+The Secret Garden,story,hard
+Tron,story,medium
+Steven Universe,story,medium
+La La Land,story,medium
+The Big Lebowski,story,medium
+Yu-Gi-Oh!,story,easy
+Hellboy,story,medium
+The Little Prince,story,medium
+Happy Feet,story,hard
+Mean Girls,story,hard
+Highlander,story,hard
+Sharknado,story,hard
+Joe DiMaggio,person,hard
+Garden State,story,hard
+Peyton Manning,person,hard
+The Boy Who Cried Wolf,story,medium
+Hairspray,story,hard
+Teletubbies,story,hard
+Pitch Perfect,story,hard
+Seattle,place,hard
+Best Buy,place,medium
+Tokyo,place,medium
+Alexander the Great,person,hard
+Auguste Rodin,person,hard
+50 First Dates,story,medium
+Steve Martin,person,medium
+Goofy,person,medium
+Victoria Beckham,person,medium
+Genghis Khan,person,medium
+Wakanda,place,medium
+Bring it On,story,medium
+Great Barrier Reef,place,hard
+Amazon River,place,medium
+Trolls,story,medium
+Blather 'Round,thing,hard
+Animorphs,story,medium
+Jane Eyre,story,hard
+Tickle Me Elmo,thing,medium
+Stretch Armstrong,thing,medium
+Mortal Kombat,thing,medium
+Nelson Mandela,person,medium
+Nintendo Switch,thing,medium
+Bitcoin,thing,medium
+Dungeons & Dragons,thing,medium
+DNA,thing,medium
+Go-Gurt,thing,hard
+jorts,thing,medium
+Wi-Fi,thing,hard
+go-kart,thing,hard
+Liberty Bell,thing,medium
+The Velveteen Rabbit,story,medium
+podcast,thing,easy
+champagne,thing,easy
+Silly Putty,thing,medium
+Slinky,thing,easy
+Mission: Impossible,story,hard
+LaCroix,thing,medium
+Beanie Baby,thing,medium
+tornado,thing,easy
+Paw Patrol,story,medium
+"Eat, Pray, Love",story,hard
+Segway,thing,easy
+Riverdale,story,medium
+Candy Land,thing,medium
+Clue,thing,medium
+The Declaration of Independence,thing,medium
+vacuum,thing,easy
+Easy Bake Oven,thing,medium
+typewriter,thing,easy
+Cinnamon Roll,thing,hard
+Eggnog,thing,hard
+Furby,thing,hard
+Glee,story,medium
+Legos,thing,easy
+Polly Pocket,thing,hard
+Spy Kids,story,medium
+Tamagotchi,thing,hard
+Crème brûlée,thing,hard
+Etch A Sketch,thing,medium
+The Emoji Movie,story,hard
+kaleidoscope,thing,medium
+Pokémon GO,thing,medium
+eyelash,thing,medium
+shrimp,thing,easy
+Botox,thing,hard
+Diary of a Wimpy Kid,story,hard
+Family Matters,story,medium
+sunscreen,thing,easy
+pedicure,thing,hard
+Girlfriends,story,medium
+Bugles,thing,medium
+raisin,thing,easy
+Code of Hammurabi,thing,hard
+hummus,thing,easy
+"Sister, Sister",story,medium
+pizza rolls,thing,medium
+Katana,thing,hard
+The X-Files,story,medium
+Chia Pet,thing,medium
+crayon,thing,easy
+spatula,thing,easy
+Big Little Lies,story,hard
+Super Soaker,thing,medium
+volcano,thing,easy
+Street Fighter,thing,medium
+worm,thing,medium
+Encyclopedia Britannica,thing,easy
+puppet,thing,easy
+kimchi,thing,medium
+cockroach,thing,easy
+Statue of David,thing,medium
+pinball machine,thing,easy
+Heelys,thing,hard
+Golden Retriever,thing,easy
+Zendaya,person,hard
+Tic Tac,thing,easy
+Ph.D.,thing,hard
+hammock,thing,easy
+George Washington Carver,person,medium
+trampoline,thing,easy
+Roomba,thing,medium
+Dirty Dancing,story,medium
+Lunchables,thing,hard
+Sleepless in Seattle,story,medium
+Mahatma Gandhi,person,medium
+Fargo,story,hard
+glacier,thing,hard
+otter,thing,easy
+flip flops,thing,easy
+Bop It,thing,hard
+Tetris,thing,easy
+Kate Middleton,person,medium
+avocado toast,thing,easy
+VCR,thing,medium
+Voyager Probe,thing,hard
+Treadmill,thing,easy
+TikTok,thing,easy
+Tide Pod,thing,easy
+kitten,thing,easy
+Espresso,thing,easy
+Pogs,thing,medium
+Xbox,thing,medium
+Koozie,thing,medium
+giraffe,thing,easy
+bubble wrap,thing,medium
+armadillo,thing,medium
+helicopter,thing,medium
+anaconda,thing,easy
+porcupine,thing,easy
+beluga whale,thing,easy
+chandelier,thing,medium
+Magna Carta,thing,hard
+hoverboard,thing,medium
+Snapchat,thing,hard
+earthquake,thing,medium
+pet rock,thing,hard
+fidget spinner,thing,medium
+saxophone,thing,easy
+seesaw,thing,easy
+Pixy Stix,thing,medium
+crouton,thing,easy
+pool noodle,thing,medium
+manatee,thing,medium
+Donkey Kong,thing,medium
+glow stick,thing,medium
+Mario,person,medium
+Twister,thing,medium
+poison ivy,thing,medium
+The Settlers of Catan,thing,hard
+Magic 8-Ball,thing,medium
+gummy worm,thing,hard
+Yahtzee,thing,medium
+quesadilla,thing,easy
+compass,thing,medium
+ladder,thing,easy
+piñata,thing,easy
+scrunchie,thing,medium
+tadpole,thing,medium
+Atari 2600,thing,hard
+Jigsaw puzzle,thing,medium
+Canada,place,easy
+Mississippi River,place,easy
+rodeo,place,easy
+Camel,thing,medium
+Build-A-Bear Workshop,place,medium
+barnacle,thing,hard
+Mr. Potato Head,thing,medium
+Ouija board,thing,medium
+bubble tea,thing,medium
+Margaritaville,place,medium
+"Toys ""R"" Us",place,easy
+barbed wire,thing,medium
+Hamster wheel,thing,medium
+Taco Bell,place,medium
+Victoria's Secret,place,medium
+Selfie stick,thing,hard
+Dunkin',place,medium
+Dim sum,thing,hard
+troll doll,thing,medium
+Iceland,place,medium
+zit,thing,medium
+LinkedIn,thing,medium
+unicycle,thing,easy
+Route 66,place,hard
+Gulf of Mexico,place,hard
+GameStop,place,medium
+Netflix,thing,medium
+CVS Pharmacy,place,medium
+Machu Picchu,place,medium
+Galápagos Islands,place,medium
+Subway,place,medium
+Lollapalooza,place,hard
+Cape Canaveral,place,hard
+Yellowstone National Park,place,medium
+Foot Locker,place,medium
+Hoover Dam,place,medium
+Dead Sea,place,medium
+The Alamo,place,hard
+Kansas,place,medium
+McDonald's PlayPlace,place,hard
+Miami,place,medium
+Walmart,place,medium
+Ripley's Believe It Or Not!,place,hard
+Lululemon,place,hard
+Rio de Janeiro,place,medium
+The Container Store,place,hard
+IMAX Movie Theater,place,hard
+car dealership,place,easy
+The Great Lakes,place,medium
+potpourri,thing,hard
+New Jersey,place,hard
+UFO,thing,hard
+Sahara desert,place,medium
+curly fries,thing,medium
+string cheese,thing,easy
+Dick's Sporting Goods,place,hard
+Lyft,thing,easy
+Axe body spray,thing,hard
+drone,thing,easy
+Dubai,place,medium
+Tyra Banks,person,medium

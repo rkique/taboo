@@ -15,21 +15,3 @@ The regular goal of taboo is to allow one player to guess a target word by a clu
 2. Game screen. Each user will now be shown the card and the taboo words, and have the chance to input a response. Once a user submits their response, they will be taken to the waiting screen.
 
 3. Waiting screen. In the waiting screen, each player should be shown the number of players who have submitted their answer. Once all players have submitted their answers, the app should compute a visualization, and display a loading icon. Once the visualization is complete, each player should be taken to view it.
-
-
-
-#### Sentence Embeddings
-If there are any identical phrases, please record this within the data object for each phrase embedding. In the past, I have used the following schema for each user input, but feel free to modify it to be more efficient. In particular, we should obtain a matrix of embeddings as we receive all user inputs at the same time for processing.
-
-class UserInput(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    text = db.Column(db.String(200), nullable=False)
-    embedding = db.Column(db.PickleType, nullable=True)
-    day = db.Column(db.Integer, nullable=False)
-
-
-#### Dimensionality Reduction
-Before passing data to the frontend, please use a UMAP to reduce the high-dimensional sentence embedding to two dimensions. These dimensions will allow the frontend to render the user input phrases the appropriate distance from one another.
-
-#### d3's force directed graph
-**Please reference the provided treeVisualization.svelte** for an example of how we want this to look. However, there are no directed edges here, so please use your best judgement for how to get the nodes to end up where they should go. There should be a short 3D animiation though. 
