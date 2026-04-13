@@ -19,77 +19,85 @@
 </script>
 
 <div class="landing">
-  <h1>T@b00</h1>
-
-  <img class="box-img" src="/images/box.png" alt="Taboo box" />
-
-  <div class="how-to">
-    <p><strong>1.</strong> Write clues for others to guess. The faster they get guessed, the better you do.</p>
-    <p><strong>2.</strong> Guess clues from others.</p>
-    <p class="tagline">The best guesser + writer wins!</p>
-  </div>
-
-  <div class="actions">
-    <button class="btn primary" onclick={handleCreate}>
-      Make Lobby
-    </button>
-
-    <div class="divider">or</div>
-
-    <div class="join-group">
-      <input
-        type="text"
-        bind:value={joinCode}
-        placeholder="Enter room code"
-        maxlength="6"
-        onkeydown={handleKeydown}
-      />
-      <button class="btn secondary" onclick={handleJoin} disabled={!joinCode.trim()}>
-        Join Lobby
-      </button>
+  <div class="content">
+    <h1>T@b00</h1>
+    <div class="how-to">
+      <p><strong>1.</strong> Write clues for others to guess. The faster they get guessed, the better you do.</p>
+      <p><strong>2.</strong> Guess clues from others.</p>
+      <p class="tagline">The best guesser + writer wins!</p>
     </div>
-  </div>
 
-  {#if $errorMsg}
-    <p class="error">{$errorMsg}</p>
-  {/if}
+    <div class="actions">
+      <button class="btn primary" onclick={handleCreate}>
+        Make Lobby
+      </button>
+
+      <div class="divider">or</div>
+
+      <div class="join-group">
+        <input
+          type="text"
+          bind:value={joinCode}
+          placeholder="Enter room code"
+          maxlength="6"
+          onkeydown={handleKeydown}
+        />
+        <button class="btn secondary" onclick={handleJoin} disabled={!joinCode.trim()}>
+          Join Lobby
+        </button>
+      </div>
+    </div>
+
+    {#if $errorMsg}
+      <p class="error">{$errorMsg}</p>
+    {/if}
+  </div>
 </div>
 
 <style>
   .landing {
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     min-height: 100vh;
-    font-family: system-ui, sans-serif;
-    background: #faf8f5;
-    color: #2c2c2c;
+    padding: 1.5rem;
+    font-family: "Avenir Next", "Gill Sans", "Trebuchet MS", sans-serif;
+    background: url("/images/eniko_eged.webp") center center / cover no-repeat;
+    color: #ffffff;
+    overflow: hidden;
+  }
+
+  .landing::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.3);
+    z-index: 0;
+  }
+
+  .content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: min(92vw, 360px);
   }
 
   h1 {
-    font-size: 3rem;
+    font-size: 4.5rem;
     margin: 0;
     letter-spacing: -0.02em;
-  }
-
-  .subtitle {
-    color: #888;
-    margin: 0.25rem 0 2.5rem;
-    font-size: 1rem;
-  }
-
-  .box-img {
-
-    width: 180px;
-    margin: 1.5rem;
+    text-transform: uppercase;
   }
 
   .how-to {
     max-width: 300px;
     text-align: left;
     margin-bottom: 1.5rem;
-    color: #555;
+    color: #ffffff;
     font-size: 0.9rem;
     line-height: 1.5;
   }
@@ -102,7 +110,7 @@
     margin-top: 0.75rem;
     text-align: center;
     font-weight: 600;
-    color: #2c2c2c;
+    color: #ffffff;
   }
 
   .actions {
@@ -116,28 +124,28 @@
   .btn {
     width: 100%;
     padding: 0.75rem 1.5rem;
-    border: none;
+    border: 1px solid #ffffff;
     border-radius: 8px;
     font-size: 1rem;
     cursor: pointer;
-    transition: opacity 0.15s;
+    transition: opacity 0.15s ease;
   }
 
   .btn:hover { opacity: 0.85; }
   .btn:disabled { opacity: 0.4; cursor: default; }
 
   .primary {
-    background: #2c2c2c;
-    color: #fff;
+    background: rgba(0, 0, 0, 0.35);
+    color: #ffffff;
   }
 
   .secondary {
-    background: #e8e4df;
-    color: #2c2c2c;
+    background: rgba(0, 0, 0, 0.2);
+    color: #ffffff;
   }
 
   .divider {
-    color: #aaa;
+    color: #ffffff;
     font-size: 0.85rem;
   }
 
@@ -151,22 +159,28 @@
   input {
     width: 100%;
     padding: 0.75rem;
-    border: 1px solid #ddd;
+    border: 1px solid #ffffff;
     border-radius: 8px;
     font-size: 1rem;
     text-align: center;
     text-transform: uppercase;
     letter-spacing: 0.15em;
     box-sizing: border-box;
+    background: transparent;
+    color: #ffffff;
+  }
+
+  input::placeholder {
+    color: #efefef;
   }
 
   input:focus {
     outline: none;
-    border-color: #2c2c2c;
+    border-color: #ffffff;
   }
 
   .error {
-    color: #c0392b;
+    color: #ffe7e2;
     margin-top: 1rem;
     font-size: 0.9rem;
   }

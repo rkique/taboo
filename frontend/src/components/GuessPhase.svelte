@@ -6,7 +6,7 @@
 
   // Only show cards that aren't mine
   let otherCards = $derived($canvasCards.filter((c) => !c.is_mine));
-
+  
   function filteredFor(cardId) {
     const q = (guessTexts[cardId] || "").trim().toLowerCase();
     if (!q) return [];
