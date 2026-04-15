@@ -5,7 +5,7 @@
   let allCluesDone = $derived($cluesDone >= $cards.length && $cards.length > 0);
   let currentEntry = $derived($cards[$currentCardIndex]);
   let currentCard = $derived(currentEntry?.card);
-  let timeLeft = $state(10);
+  let timeLeft = $state(60);
   let submittedCurrent = $state(false);
   let timerExpired = $state(false);
 
