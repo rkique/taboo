@@ -172,3 +172,7 @@ export function returnToLobby(id) {
 export function renameSelf(id, name) {
   socket.emit("rename", { room_id: id, name });
 }
+
+export function endGame(id) {
+  socket.emit("end_game", { room_id: id });
+}

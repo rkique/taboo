@@ -5,14 +5,56 @@
   let allCluesDone = $derived($cluesDone >= $cards.length && $cards.length > 0);
   let currentEntry = $derived($cards[$currentCardIndex]);
   let currentCard = $derived(currentEntry?.card);
+  let timeLeft = $state(10);
+  let submittedCurrent = $state(false);
+  let timerExpired = $state(false);
+
+  // Only reset submitted flag when card changes (timer persists across cards)
+  $effect(() => {
+    $currentCardIndex; // dependency
+    submittedCurrent = false;
+  });
+
+  // Timer effect - runs once for entire phase
+  $effect(() => {
+    if (timeLeft > 0 && !timerExpired && !allCluesDone) {
+      const interval = setInterval(() => {
+        timeLeft--;
+        if (timeLeft === 0) {
+          timerExpired = true;
+          // Auto-submit [EMPTY] for current card if not yet submitted
+          if (!submittedCurrent && currentEntry) {
+            submittedCurrent = true;
+            submitClue($roomId, currentEntry.card_id, "[EMPTY]");
+          }
+        }
+      }, 1000);
+      return () => clearInterval(interval);
+    }
+  });
 
   //submit a clue on card button.
   function handleSubmit() {
-    if (clueText.trim() && currentEntry) {
+    if (clueText.trim() && currentEntry && !submittedCurrent) {
+      submittedCurrent = true;
       submitClue($roomId, currentEntry.card_id, clueText.trim());
       clueText = "";
     }
   }
+
+  // Auto-submit [EMPTY] for remaining cards when timer expires
+  function submitEmptyForCurrentCard() {
+    if (!submittedCurrent && timerExpired && currentEntry) {
+      submittedCurrent = true;
+      submitClue($roomId, currentEntry.card_id, "[EMPTY]");
+    }
+  }
+
+  $effect(() => {
+    if (timerExpired && !submittedCurrent && currentEntry) {
+      submitEmptyForCurrentCard();
+    }
+  });
 
   function handleKeydown(e) {
     if (e.key === "Enter") handleSubmit();
@@ -27,6 +69,8 @@
       <p class="progress">{$clueProgress.players_done} / {$clueProgress.total} players done</p>
     </div>
   {:else if currentCard}
+    <div class="timer" class:expired={timerExpired}>Time left: {timeLeft}s</div>
+
     <p class="progress-label">Card {$currentCardIndex + 1} of {$cards.length}</p>
 
     <div class="card">
@@ -47,8 +91,9 @@
         placeholder="Type your clue..."
         maxlength="200"
         onkeydown={handleKeydown}
+        disabled={submittedCurrent || timerExpired}
       />
-      <button class="btn primary" onclick={handleSubmit} disabled={!clueText.trim()}>
+      <button class="btn primary" onclick={handleSubmit} disabled={!clueText.trim() || submittedCurrent || timerExpired}>
         Submit Clue
       </button>
     </div>
@@ -77,6 +122,17 @@
     font-size: 0.85rem;
     margin: 0;
     letter-spacing: 0.05em;
+  }
+
+  .timer {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #2c2c2c;
+    margin-bottom: 1rem;
+  }
+
+  .timer.expired {
+    color: #c0392b;
   }
 
   .card {

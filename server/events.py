@@ -301,6 +301,28 @@ def register(socketio):
             # Only tell the guesser it was wrong
             emit("guess_wrong", {"card_id": card_id})
 
+    @socketio.on("end_game")
+    def on_end_game(data):
+        sid = request.sid
+        room_id = data.get("room_id", "").strip().upper()
+        room = rooms.get_room(room_id)
+
+        if not room or room["state"] != "guess_phase":
+            return
+
+        # End the game immediately with current scores
+        room["state"] = "finished"
+        final_scores = []
+        for s in room["player_order"]:
+            final_scores.append({
+                "sid": s,
+                "name": room["players"].get(s, {}).get("name", "Unknown"),
+                "color": room["player_colors"].get(s, "#888"),
+                "score": room["correct_counts"].get(s, 0),
+            })
+        final_scores.sort(key=lambda x: x["score"], reverse=True)
+        emit("game_over", {"scores": final_scores}, room=room_id)
+
     @socketio.on("return_to_lobby")
     def on_return_to_lobby(data):
         sid = request.sid

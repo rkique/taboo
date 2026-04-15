@@ -1,8 +1,26 @@
 <script>
-  import { canvasCards, wordList, roomId, playersInfo, cardClaims, scores, wrongGuessCardId, submitCanvasGuess, errorMsg, finalScores, returnToLobby } from "../stores/gameStore.js";
+  import { canvasCards, wordList, roomId, playersInfo, cardClaims, scores, wrongGuessCardId, submitCanvasGuess, errorMsg, finalScores, returnToLobby, endGame } from "../stores/gameStore.js";
 
   let guessTexts = $state({});
   let showDropdowns = $state({});
+  let timeLeft = $state(60);
+  let gameEnded = $state(false);
+  let waitingForFinalScores = $state(false);
+
+  // Timer effect
+  $effect(() => {
+    if (timeLeft > 0 && !gameEnded) {
+      const interval = setInterval(() => {
+        timeLeft--;
+        if (timeLeft === 0 && !gameEnded) {
+          gameEnded = true;
+          waitingForFinalScores = true;
+          endGame($roomId);
+        }
+      }, 1000);
+      return () => clearInterval(interval);
+    }
+  });
 
   // Only show cards that aren't mine
   let otherCards = $derived($canvasCards.filter((c) => !c.is_mine));
@@ -54,6 +72,8 @@
       </div>
     {/each}
   </div>
+
+  <div class="timer">Time left: {timeLeft}s</div>
 
   <div class="card-grid">
     {#each otherCards as card}
@@ -108,20 +128,26 @@
     <p class="error">{$errorMsg}</p>
   {/if}
 
-  {#if $finalScores.length > 0}
+  {#if $finalScores.length > 0 || waitingForFinalScores}
     <div class="modal-overlay">
       <div class="modal">
         <h3>Game Over</h3>
-        <div class="modal-scores">
-          {#each $finalScores as entry, i}
-            <div class="score-row" class:winner={i === 0}>
-              <span class="rank">{i + 1}</span>
-              <span class="color-dot" style="background: {entry.color}"></span>
-              <span class="modal-name">{entry.name}</span>
-              <span class="modal-score">{entry.score}</span>
-            </div>
-          {/each}
-        </div>
+
+        {#if $finalScores.length > 0}
+          <div class="modal-scores">
+            {#each $finalScores as entry, i}
+              <div class="score-row" class:winner={i === 0}>
+                <span class="rank">{i + 1}</span>
+                <span class="color-dot" style="background: {entry.color}"></span>
+                <span class="modal-name">{entry.name}</span>
+                <span class="modal-score">{entry.score}</span>
+              </div>
+            {/each}
+          </div>
+        {:else}
+          <p class="loading">Waiting for final scores…</p>
+        {/if}
+
         <button class="btn primary" onclick={() => returnToLobby($roomId)}>
           Back to Lobby
         </button>
@@ -175,6 +201,13 @@
   .chip-score {
     font-size: 1rem;
     font-weight: 700;
+  }
+
+  .timer {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #2c2c2c;
+    margin-bottom: 1rem;
   }
 
   .card-grid {
