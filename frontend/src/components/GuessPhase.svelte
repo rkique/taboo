@@ -1,27 +1,11 @@
 <script>
-  import { canvasCards, wordList, roomId, playersInfo, cardClaims, scores, wrongGuessCardId, submitCanvasGuess, errorMsg, finalScores, returnToLobby, guessPhaseTime } from "../stores/gameStore.js";
+  import { canvasCards, wordList, roomId, playersInfo, cardClaims, scores, wrongGuessCardId, submitCanvasGuess, errorMsg, finalScores, returnToLobby, guessPhaseTime, endGame } from "../stores/gameStore.js";
   import { onMount, onDestroy } from "svelte";
 
   let guessTexts = $state({});
   let showDropdowns = $state({});
-  let timeLeft = $state(60);
   let gameEnded = $state(false);
   let waitingForFinalScores = $state(false);
-
-  // Timer effect
-  $effect(() => {
-    if (timeLeft > 0 && !gameEnded) {
-      const interval = setInterval(() => {
-        timeLeft--;
-        if (timeLeft === 0 && !gameEnded) {
-          gameEnded = true;
-          waitingForFinalScores = true;
-          endGame($roomId);
-        }
-      }, 1000);
-      return () => clearInterval(interval);
-    }
-  });
 
   // Timer state
   let totalTime = $state(60);
@@ -32,7 +16,14 @@
     totalTime = $guessPhaseTime;
     timeLeft = totalTime;
     timerInterval = setInterval(() => {
-      timeLeft = Math.max(0, timeLeft - 0.05);
+      const nextTime = Math.max(0, timeLeft - 0.05);
+      timeLeft = nextTime;
+      if (nextTime <= 0 && !gameEnded) {
+        gameEnded = true;
+        waitingForFinalScores = true;
+        endGame($roomId);
+        clearInterval(timerInterval);
+      }
     }, 50);
   });
 

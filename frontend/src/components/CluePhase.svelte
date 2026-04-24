@@ -63,20 +63,6 @@
     }
   }
 
-  // Auto-submit [EMPTY] for remaining cards when timer expires
-  function submitEmptyForCurrentCard() {
-    if (!submittedCurrent && timerExpired && currentEntry) {
-      submittedCurrent = true;
-      submitClue($roomId, currentEntry.card_id, "[EMPTY]");
-    }
-  }
-
-  $effect(() => {
-    if (timerExpired && !submittedCurrent && currentEntry) {
-      submitEmptyForCurrentCard();
-    }
-  });
-
   function handleKeydown(e) {
     if (e.key === "Enter") handleSubmit();
   }
@@ -110,7 +96,7 @@
         placeholder="Type your clue..."
         maxlength="200"
         onkeydown={handleKeydown}
-        disabled={submittedCurrent || timerExpired}
+        disabled={phaseOver}
       />
       <button class="submit-arrow" onclick={handleSubmit} disabled={!clueText.trim()} aria-label="Submit clue">
         &#8594;
