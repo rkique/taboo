@@ -9,19 +9,20 @@ FALLBACK_CARD = {
 
 
 def load_cards(path=CSV_PATH):
-    """Load taboo cards from a CSV file.
+    """Load taboo cards from blather_round_taboo.csv.
 
-    Expected CSV columns: word, taboo_words
-    taboo_words are semicolon-separated.
+    Expected CSV columns: name, category, difficulty, taboo_1..taboo_5
     """
     cards = []
     if os.path.exists(path):
         with open(path, newline="", encoding="utf-8") as f:
             reader = csv.DictReader(f)
             for row in reader:
-                word = row["word"].strip()
+                word = row["name"].strip()
                 taboo_words = [
-                    w.strip().strip('"') for w in row["taboo_words"].split(";")
+                    row[col].strip()
+                    for col in ("taboo_1", "taboo_2", "taboo_3", "taboo_4", "taboo_5")
+                    if row.get(col, "").strip()
                 ]
                 cards.append({"word": word, "taboo_words": taboo_words})
 

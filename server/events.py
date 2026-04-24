@@ -1,8 +1,74 @@
 import random
+import time
 from flask import request
 from flask_socketio import join_room, leave_room, emit
 import rooms
-from config import CARDS_PER_PLAYER, DEBUG_MODE
+from config import DEBUG_MODE, CLUE_PHASE_TIME, GUESS_PHASE_TIME
+
+
+def _transition_to_guess(socketio, room_id):
+    """Transition a room from clue phase to guess phase."""
+    room = rooms.get_room(room_id)
+    if not room or room["state"] != "clue_phase":
+        return
+
+    room["state"] = "guess_phase"
+    room["guess_phase_start"] = time.time()
+
+    # Build players_info for layout
+    players_info = []
+    for s in room["player_order"]:
+        players_info.append({
+            "sid": s,
+            "name": room["players"].get(s, {}).get("name", "Unknown"),
+            "color": room["player_colors"].get(s, "#888"),
+        })
+
+    # Build canvas payload per player (only cards with real clues)
+    all_players = list(room["players"].keys())
+    for player_sid in all_players:
+        player_canvas = []
+        for cc in room["canvas_cards"]:
+            entry = {
+                "card_id": cc["card_id"],
+                "owner_sid": cc["owner_sid"],
+                "owner_name": room["players"].get(cc["owner_sid"], {}).get("name", "Unknown"),
+                "clue": room["clues"].get(cc["owner_sid"], {}).get(cc["card_id"], ""),
+                "is_mine": cc["owner_sid"] == player_sid,
+            }
+            if cc["owner_sid"] == player_sid:
+                entry["word"] = cc["card"]["word"]
+            player_canvas.append(entry)
+
+        socketio.emit("canvas_ready", {
+            "canvas": player_canvas,
+            "word_list": room["all_words"],
+            "players_info": players_info,
+            "player_colors": room["player_colors"],
+            "scores": room["correct_counts"],
+            "guess_phase_time": GUESS_PHASE_TIME,
+        }, room=player_sid)
+
+    # Start background timer to end guess phase
+    def end_guess_phase(rid):
+        import gevent
+        gevent.sleep(GUESS_PHASE_TIME)
+        r = rooms.get_room(rid)
+        if r and r["state"] == "guess_phase":
+            r["state"] = "finished"
+            final_scores = []
+            for s in r["player_order"]:
+                final_scores.append({
+                    "sid": s,
+                    "name": r["players"].get(s, {}).get("name", "Unknown"),
+                    "color": r["player_colors"].get(s, "#888"),
+                    "score": r["correct_counts"].get(s, 0),
+                })
+            final_scores.sort(key=lambda x: x["score"], reverse=True)
+            socketio.emit("game_over", {"scores": final_scores}, room=rid)
+
+    import gevent
+    gevent.spawn(end_guess_phase, room_id)
 
 
 def register(socketio):
@@ -121,48 +187,45 @@ def register(socketio):
             emit("error", {"message": "Only the leader can start the game."})
             return
 
-        num_players = len(room["players"])
-        total_needed = CARDS_PER_PLAYER * num_players
-
-        if total_needed > len(CARDS):
-            emit("error", {"message": f"Not enough cards. Need {total_needed}, have {len(CARDS)}."})
-            return
-
-        rooms.assign_unique_cards(room_id, CARDS, CARDS_PER_PLAYER)
+        rooms.init_game(room_id)
         room["all_words"] = [c["word"] for c in CARDS]
         room["state"] = "clue_phase"
         room["clues"] = {}
 
-        # Auto-submit clues for bots — clue is just the answer word
+        # Auto-submit clues for bots (4 random cards each)
         bot_sids = room.get("bots", [])
         for bot_sid in bot_sids:
-            room["clues"][bot_sid] = {}
-            for cc in room["canvas_cards"]:
-                if cc["owner_sid"] == bot_sid:
-                    room["clues"][bot_sid][cc["card_id"]] = cc["card"]["word"]
+            bot_cards = random.sample(CARDS, min(4, len(CARDS)))
+            for card in bot_cards:
+                rooms.add_clued_card(room_id, bot_sid, card, card["word"])
 
-        # Send each real player only their own cards
+        # Send the full card pool to each real player — they pick random cards locally
+        all_cards_data = [{"word": c["word"], "taboo_words": c["taboo_words"]} for c in CARDS]
         for player_sid in room["players"]:
             if player_sid in bot_sids:
                 continue
-            my_cards = []
-            for cc in room["canvas_cards"]:
-                if cc["owner_sid"] == player_sid:
-                    my_cards.append({
-                        "card": cc["card"],
-                        "card_id": cc["card_id"],
-                    })
             socketio.emit("game_started", {
-                "cards": my_cards,
+                "all_cards": all_cards_data,
                 "word_list": room["all_words"],
+                "clue_phase_time": CLUE_PHASE_TIME,
             }, room=player_sid)
+
+        # Start background timer to end clue phase
+        def end_clue_phase(rid):
+            import gevent
+            gevent.sleep(CLUE_PHASE_TIME)
+            _transition_to_guess(socketio, rid)
+
+        import gevent
+        gevent.spawn(end_clue_phase, room_id)
 
     @socketio.on("submit_clue")
     def on_submit_clue(data):
         sid = request.sid
         room_id = data.get("room_id", "").strip().upper()
-        card_id = data.get("card_id")
         clue = data.get("clue", "").strip()[:200]
+        word = data.get("word", "").strip()
+        taboo_words = data.get("taboo_words", [])
 
         room = rooms.get_room(room_id)
         if not room or room["state"] != "clue_phase":
@@ -171,75 +234,22 @@ def register(socketio):
             emit("error", {"message": "Clue cannot be empty."})
             return
 
-        # Check for taboo words and target word in the clue
-        target_card = None
-        for cc in room["canvas_cards"]:
-            if cc["card_id"] == card_id:
-                target_card = cc["card"]
-                break
-        if target_card:
-            clue_lower = clue.lower()
-            if target_card["word"].lower() in clue_lower:
-                emit("error", {"message": f'Your clue cannot contain the target word "{target_card["word"]}".'})
+        # Validate clue doesn't contain target or taboo words
+        clue_lower = clue.lower()
+        if word.lower() in clue_lower:
+            emit("error", {"message": f'Your clue cannot contain the target word "{word}".'})
+            return
+        for tw in taboo_words:
+            if tw.lower() in clue_lower:
+                emit("error", {"message": f'Your clue cannot contain the taboo word "{tw}".'})
                 return
-            for tw in target_card["taboo_words"]:
-                if tw.lower() in clue_lower:
-                    emit("error", {"message": f'Your clue cannot contain the taboo word "{tw}".'})
-                    return
 
-        player_done, all_done = rooms.record_clue(room_id, sid, card_id, clue)
-        emit("clue_submitted", {"card_id": card_id, "clues_done": player_done})
+        # Add the card to the canvas
+        card = {"word": word, "taboo_words": taboo_words}
+        card_id = rooms.add_clued_card(room_id, sid, card, clue)
 
-        # Progress
-        all_players = list(room["players"].keys())
-        players_fully_done = sum(
-            1 for s in all_players
-            if all(
-                cid in room["clues"].get(s, {})
-                for cid in [c["card_id"] for c in room["canvas_cards"] if c["owner_sid"] == s]
-            )
-        )
-        emit("clue_progress", {
-            "players_done": players_fully_done,
-            "total": len(all_players),
-        }, room=room_id)
-
-        if all_done:
-            import time
-            room["state"] = "guess_phase"
-            room["guess_phase_start"] = time.time()
-
-            # Build players_info for circle layout
-            players_info = []
-            for s in room["player_order"]:
-                players_info.append({
-                    "sid": s,
-                    "name": room["players"].get(s, {}).get("name", "Unknown"),
-                    "color": room["player_colors"].get(s, "#888"),
-                })
-
-            # Build canvas payload per player
-            for player_sid in all_players:
-                player_canvas = []
-                for cc in room["canvas_cards"]:
-                    entry = {
-                        "card_id": cc["card_id"],
-                        "owner_sid": cc["owner_sid"],
-                        "owner_name": room["players"].get(cc["owner_sid"], {}).get("name", "Unknown"),
-                        "clue": room["clues"].get(cc["owner_sid"], {}).get(cc["card_id"], ""),
-                        "is_mine": cc["owner_sid"] == player_sid,
-                    }
-                    if cc["owner_sid"] == player_sid:
-                        entry["word"] = cc["card"]["word"]
-                    player_canvas.append(entry)
-
-                socketio.emit("canvas_ready", {
-                    "canvas": player_canvas,
-                    "word_list": room["all_words"],
-                    "players_info": players_info,
-                    "player_colors": room["player_colors"],
-                    "scores": room["correct_counts"],
-                }, room=player_sid)
+        clues_done = len(room["clues"].get(sid, {}))
+        emit("clue_submitted", {"card_id": card_id, "clues_done": clues_done})
 
     @socketio.on("submit_canvas_guess")
     def on_submit_canvas_guess(data):
@@ -263,7 +273,6 @@ def register(socketio):
         is_correct, scores = rooms.check_canvas_guess(room_id, sid, card_id, guess)
 
         if is_correct:
-            # Broadcast to entire room
             emit("card_claimed", {
                 "card_id": card_id,
                 "claimer_sid": sid,
@@ -273,14 +282,12 @@ def register(socketio):
             }, room=room_id)
 
             # Check if all guessable cards are claimed
-            # A card is guessable if at least one player exists who doesn't own it
             bot_sids = set(room.get("bots", []))
             real_sids = set(s for s in room["players"] if s not in bot_sids)
             guessable = []
             for cc in room["canvas_cards"]:
                 owner = cc["owner_sid"]
                 if DEBUG_MODE and len(real_sids) == 1 and owner in real_sids:
-                    # Single real player can't guess their own cards — skip
                     continue
                 guessable.append(cc)
             all_claimed = len(guessable) > 0 and all(
@@ -298,7 +305,6 @@ def register(socketio):
                 final_scores.sort(key=lambda x: x["score"], reverse=True)
                 emit("game_over", {"scores": final_scores}, room=room_id)
         else:
-            # Only tell the guesser it was wrong
             emit("guess_wrong", {"card_id": card_id})
 
     @socketio.on("end_game")
@@ -332,7 +338,6 @@ def register(socketio):
         if not room:
             return
 
-        # Reset game state
         room["state"] = "lobby"
         room["player_cards"] = {}
         room["canvas_cards"] = []

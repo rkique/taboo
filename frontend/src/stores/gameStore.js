@@ -11,22 +11,22 @@ export const players = writable([]);
 export const errorMsg = writable(null);
 
 // Clue phase
-export const cards = writable([]);
+export const allCards = writable([]);       // full card pool from server
 export const wordList = writable([]);
-export const currentCardIndex = writable(0);
 export const cluesDone = writable(0);
-export const clueProgress = writable({ players_done: 0, total: 0 });
+export const cluePhaseTime = writable(60);
 
 // Canvas/guess phase
 export const canvasCards = writable([]);
-export const playersInfo = writable([]);   // [{sid, name, color}] ordered for circle
-export const playerColors = writable({});  // {sid: color}
-export const cardClaims = writable({});    // {card_id: {claimer_sid, claimer_color}}
-export const scores = writable({});        // {sid: correct_count}
-export const wrongGuessCardId = writable(null); // briefly set on wrong guess
+export const playersInfo = writable([]);
+export const playerColors = writable({});
+export const cardClaims = writable({});
+export const scores = writable({});
+export const wrongGuessCardId = writable(null);
+export const guessPhaseTime = writable(60);
 
 // Finish screen
-export const finalScores = writable([]);  // [{sid, name, color, score}]
+export const finalScores = writable([]);
 
 // --- Socket connection ---
 const socket = io({ path: "/socket.io" });
@@ -76,25 +76,16 @@ socket.on("player_left", (data) => {
 
 // Game started — clue phase begins
 socket.on("game_started", (data) => {
-  cards.set(data.cards);
+  allCards.set(data.all_cards);
   wordList.set(data.word_list);
-  currentCardIndex.set(0);
   cluesDone.set(0);
-  clueProgress.set({ players_done: 0, total: 0 });
+  cluePhaseTime.set(data.clue_phase_time || 60);
   screen.set("clue");
 });
 
 // Clue phase events
 socket.on("clue_submitted", (data) => {
   cluesDone.set(data.clues_done);
-  currentCardIndex.update((idx) => {
-    if (data.clues_done > idx) return data.clues_done;
-    return idx;
-  });
-});
-
-socket.on("clue_progress", (data) => {
-  clueProgress.set(data);
 });
 
 // Canvas ready — guess phase begins
@@ -105,10 +96,11 @@ socket.on("canvas_ready", (data) => {
   playerColors.set(data.player_colors);
   scores.set(data.scores);
   cardClaims.set({});
+  guessPhaseTime.set(data.guess_phase_time || 60);
   screen.set("guess");
 });
 
-// A card was correctly guessed — broadcast to all players
+// A card was correctly guessed
 socket.on("card_claimed", (data) => {
   cardClaims.update((c) => ({
     ...c,
@@ -120,13 +112,13 @@ socket.on("card_claimed", (data) => {
   scores.set(data.scores);
 });
 
-// Wrong guess — only sent to the guesser
+// Wrong guess
 socket.on("guess_wrong", (data) => {
   wrongGuessCardId.set(data.card_id);
   setTimeout(() => wrongGuessCardId.set(null), 1200);
 });
 
-// Game over — stays on guess screen, modal shown via finalScores
+// Game over
 socket.on("game_over", (data) => {
   finalScores.set(data.scores);
 });
@@ -153,8 +145,8 @@ export function startGame(id) {
   socket.emit("start_game", { room_id: id });
 }
 
-export function submitClue(id, cardId, clue) {
-  socket.emit("submit_clue", { room_id: id, card_id: cardId, clue });
+export function submitClue(id, word, tabooWords, clue) {
+  socket.emit("submit_clue", { room_id: id, word, taboo_words: tabooWords, clue });
 }
 
 export function submitCanvasGuess(id, cardId, guess) {

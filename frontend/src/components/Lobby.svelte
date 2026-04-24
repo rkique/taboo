@@ -25,79 +25,103 @@
 </script>
 
 <div class="lobby">
-  <h2>Lobby</h2>
-  <div class="code-display">
-    <span class="label">Room Code</span>
-    <span class="code">{$roomId}</span>
-  </div>
+  <div class="content">
+    <h2>Lobby</h2>
+    <div class="code-display">
+      <span class="label">Room Code</span>
+      <span class="code">{$roomId}</span>
+    </div>
 
-  <div class="your-name">
-    {#if editing}
-      <input
-        type="text"
-        bind:value={nameInput}
-        onkeydown={handleKeydown}
-        onblur={saveName}
-        maxlength="30"
-        autofocus
-      />
+    <div class="your-name">
+      {#if editing}
+        <input
+          type="text"
+          bind:value={nameInput}
+          onkeydown={handleKeydown}
+          onblur={saveName}
+          maxlength="30"
+          autofocus
+        />
+      {:else}
+        <span class="name-display" onclick={startEditing} title="Click to edit">
+          {$playerName}
+        </span>
+        <button class="edit-btn" onclick={startEditing}>edit</button>
+      {/if}
+    </div>
+
+    <div class="player-count">
+      {$players.length} player{$players.length !== 1 ? "s" : ""} connected
+    </div>
+
+    <ul class="player-list">
+      {#each $players as p}
+        <li>{p.name}</li>
+      {/each}
+    </ul>
+
+    {#if $isLeader}
+      <div class="bot-selector">
+        <label>Bots:</label>
+        {#each [0, 1, 2, 3, 4, 5] as n}
+          <button
+            class="bot-btn"
+            class:active={botCount === n}
+            onclick={() => { botCount = n; addBots($roomId, n); }}
+          >{n}</button>
+        {/each}
+      </div>
+      <button class="btn primary" onclick={() => startGame($roomId)}>
+        Start Game
+      </button>
     {:else}
-      <span class="name-display" onclick={startEditing} title="Click to edit">
-        {$playerName}
-      </span>
-      <button class="edit-btn" onclick={startEditing}>edit</button>
+      <p class="waiting-msg">Waiting for the leader to start...</p>
+    {/if}
+
+    {#if $errorMsg}
+      <p class="error">{$errorMsg}</p>
     {/if}
   </div>
-
-  <div class="player-count">
-    {$players.length} player{$players.length !== 1 ? "s" : ""} connected
-  </div>
-
-  <ul class="player-list">
-    {#each $players as p}
-      <li>{p.name}</li>
-    {/each}
-  </ul>
-
-  {#if $isLeader}
-    <div class="bot-selector">
-      <label>Bots:</label>
-      {#each [0, 1, 2, 3, 4, 5] as n}
-        <button
-          class="bot-btn"
-          class:active={botCount === n}
-          onclick={() => { botCount = n; addBots($roomId, n); }}
-        >{n}</button>
-      {/each}
-    </div>
-    <button class="btn primary" onclick={() => startGame($roomId)}>
-      Start Game
-    </button>
-  {:else}
-    <p class="waiting-msg">Waiting for the leader to start...</p>
-  {/if}
-
-  {#if $errorMsg}
-    <p class="error">{$errorMsg}</p>
-  {/if}
 </div>
 
 <style>
   .lobby {
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     min-height: 100vh;
-    font-family: system-ui, sans-serif;
-    background: #faf8f5;
-    color: #2c2c2c;
+    padding: 1.5rem;
+    font-family: "Avenir Next", "Gill Sans", "Trebuchet MS", sans-serif;
+    background: url("/images/eniko_eged_2.jpg") center center / cover no-repeat;
+    color: #ffffff;
+    overflow: hidden;
+  }
+
+  .lobby::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 80% 90% at center, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.3) 100%);
+    z-index: 0;
+  }
+
+  .content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: min(92vw, 360px);
     gap: 1.25rem;
   }
 
   h2 {
-    font-size: 2rem;
+    font-size: 2.5rem;
     margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
   }
 
   .code-display {
@@ -109,7 +133,7 @@
 
   .label {
     font-size: 0.8rem;
-    color: #888;
+    color: rgba(255, 255, 255, 0.6);
     text-transform: uppercase;
     letter-spacing: 0.1em;
   }
@@ -130,13 +154,13 @@
     font-size: 1.1rem;
     font-weight: 600;
     cursor: pointer;
-    border-bottom: 1px dashed #aaa;
+    border-bottom: 1px dashed rgba(255, 255, 255, 0.5);
   }
 
   .edit-btn {
     background: none;
     border: none;
-    color: #aaa;
+    color: rgba(255, 255, 255, 0.5);
     font-size: 0.75rem;
     cursor: pointer;
     text-decoration: underline;
@@ -146,10 +170,12 @@
     font-size: 1.1rem;
     font-weight: 600;
     padding: 0.25rem 0.5rem;
-    border: 1px solid #2c2c2c;
+    border: 1px solid #ffffff;
     border-radius: 6px;
     text-align: center;
     width: 200px;
+    background: transparent;
+    color: #ffffff;
   }
 
   .your-name input:focus {
@@ -157,7 +183,7 @@
   }
 
   .player-count {
-    color: #666;
+    color: rgba(255, 255, 255, 0.6);
     font-size: 0.95rem;
   }
 
@@ -172,30 +198,33 @@
   }
 
   .player-list li {
-    background: #e8e4df;
+    background: rgba(255, 255, 255, 0.15);
     padding: 0.35rem 0.75rem;
     border-radius: 6px;
     font-size: 0.85rem;
+    color: #ffffff;
   }
 
   .btn {
-    padding: 0.75rem 2rem;
-    border: none;
+    width: 100%;
+    padding: 0.75rem 1.5rem;
+    border: 1px solid #ffffff;
     border-radius: 8px;
     font-size: 1rem;
     cursor: pointer;
-    transition: opacity 0.15s;
+    transition: opacity 0.15s ease;
   }
 
   .btn:hover { opacity: 0.85; }
 
   .primary {
-    background: #2c2c2c;
-    color: #fff;
+    background: #ffffff;
+    color: #000000;
+    font-weight: 600;
   }
 
   .waiting-msg {
-    color: #888;
+    color: rgba(255, 255, 255, 0.6);
     font-style: italic;
   }
 
@@ -207,29 +236,30 @@
 
   .bot-selector label {
     font-size: 0.9rem;
-    color: #666;
+    color: rgba(255, 255, 255, 0.6);
     margin-right: 0.25rem;
   }
 
   .bot-btn {
     width: 2rem;
     height: 2rem;
-    border: 1px solid #ccc;
+    border: 1px solid rgba(255, 255, 255, 0.3);
     border-radius: 6px;
-    background: #fff;
+    background: transparent;
+    color: #ffffff;
     cursor: pointer;
     font-size: 0.9rem;
     transition: all 0.15s;
   }
 
   .bot-btn.active {
-    background: #2c2c2c;
-    color: #fff;
-    border-color: #2c2c2c;
+    background: #ffffff;
+    color: #000000;
+    border-color: #ffffff;
   }
 
   .error {
-    color: #c0392b;
+    color: #ffe7e2;
     font-size: 0.9rem;
   }
 </style>

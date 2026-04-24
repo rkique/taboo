@@ -85,12 +85,10 @@ def remove_player(sid):
     return None, None
 
 
-def assign_unique_cards(room_id, all_cards, cards_per_player):
-    """Assign unique cards to each player, assign colors, and build canvas layout."""
+def init_game(room_id):
+    """Initialize game state: colors, order, empty canvas. Cards added as clues come in."""
     room = get_room(room_id)
     sids = list(room["players"].keys())
-    total_needed = cards_per_player * len(sids)
-    selected = random.sample(all_cards, min(total_needed, len(all_cards)))
 
     room["player_cards"] = {}
     room["canvas_cards"] = []
@@ -98,46 +96,33 @@ def assign_unique_cards(room_id, all_cards, cards_per_player):
     room["player_colors"] = {}
     room["correct_counts"] = {sid: 0 for sid in sids}
     room["card_claims"] = {}
+    room["clue_counter"] = {}  # {sid: int} for generating card_ids
 
-    # Assign colors
     for i, sid in enumerate(sids):
         room["player_colors"][sid] = PLAYER_COLORS[i % len(PLAYER_COLORS)]
 
-    # Assign cards — keep grouped by player (no shuffle, circle layout handles positioning)
-    for i, sid in enumerate(sids):
-        start = i * cards_per_player
-        player_slice = selected[start:start + cards_per_player]
-        room["player_cards"][sid] = player_slice
-        for j, card in enumerate(player_slice):
-            card_id = f"{sid}_{j}"
-            room["canvas_cards"].append({
-                "card_id": card_id,
-                "card": card,
-                "owner_sid": sid,
-            })
 
-
-def record_clue(room_id, sid, card_id, clue_text):
-    """Record a clue for a specific card. Returns (player_done_count, all_clues_done)."""
+def add_clued_card(room_id, sid, card, clue_text):
+    """Add a card to the canvas when a player submits a clue. Returns card_id."""
     room = get_room(room_id)
     if not room:
-        return 0, False
+        return None
+    count = room["clue_counter"].get(sid, 0)
+    card_id = f"{sid}_{count}"
+    room["clue_counter"][sid] = count + 1
+
+    room["canvas_cards"].append({
+        "card_id": card_id,
+        "card": card,
+        "owner_sid": sid,
+    })
 
     if sid not in room["clues"]:
         room["clues"][sid] = {}
     room["clues"][sid][card_id] = clue_text
 
-    my_card_ids = [c["card_id"] for c in room["canvas_cards"] if c["owner_sid"] == sid]
-    player_done = sum(1 for cid in my_card_ids if cid in room["clues"].get(sid, {}))
+    return card_id
 
-    all_done = all(
-        all(
-            cid in room["clues"].get(s, {})
-            for cid in [c["card_id"] for c in room["canvas_cards"] if c["owner_sid"] == s]
-        )
-        for s in room["players"]
-    )
-    return player_done, all_done
 
 
 def check_canvas_guess(room_id, sid, card_id, guess_text):

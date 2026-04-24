@@ -22,28 +22,25 @@
   <div class="content">
     <h1>T@b00</h1>
     <div class="how-to">
-      <p><strong>1.</strong> Write clues for others to guess. The faster they get guessed, the better you do.</p>
-      <p><strong>2.</strong> Guess clues from others.</p>
-      <p class="tagline">The best guesser + writer wins!</p>
-    </div>
+      <p> Describe words without using t@boos.</p>
+      <p> Compete with others to guess words.</p>
+      </div>
 
     <div class="actions">
       <button class="btn primary" onclick={handleCreate}>
         Make Lobby
       </button>
 
-      <div class="divider">or</div>
-
-      <div class="join-group">
+      <div class="join-row">
         <input
           type="text"
           bind:value={joinCode}
-          placeholder="Enter room code"
+          placeholder="Room Code"
           maxlength="6"
           onkeydown={handleKeydown}
         />
-        <button class="btn secondary" onclick={handleJoin} disabled={!joinCode.trim()}>
-          Join Lobby
+        <button class="arrow-btn" onclick={handleJoin} disabled={!joinCode.trim()} aria-label="Join lobby">
+          &#8594;
         </button>
       </div>
     </div>
@@ -73,7 +70,7 @@
     content: "";
     position: absolute;
     inset: 0;
-    background: rgba(0, 0, 0, 0.3);
+    background: radial-gradient(ellipse 80% 90% at center, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.3) 100%);
     z-index: 0;
   }
 
@@ -94,16 +91,18 @@
   }
 
   .how-to {
-    max-width: 300px;
-    text-align: left;
+    max-width: 360px;
+    text-align: center;
     margin-bottom: 1.5rem;
     color: #ffffff;
-    font-size: 0.9rem;
-    line-height: 1.5;
+    font-variant:small-caps;
+    font-size: 1.15rem;
+    font-weight: 600;
+    line-height: 1.6;
   }
 
   .how-to p {
-    margin: 0.4rem 0;
+    margin: 0.5rem 0;
   }
 
   .how-to .tagline {
@@ -132,52 +131,57 @@
   }
 
   .btn:hover { opacity: 0.85; }
-  .btn:disabled { opacity: 0.4; cursor: default; }
+  .btn:disabled { opacity: 0.9; cursor: default; }
 
   .primary {
     background: rgba(0, 0, 0, 0.35);
     color: #ffffff;
   }
 
-  .secondary {
-    background: rgba(0, 0, 0, 0.2);
-    color: #ffffff;
-  }
-
-  .divider {
-    color: #ffffff;
-    font-size: 0.85rem;
-  }
-
-  .join-group {
+  .join-row {
     display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
     width: 100%;
-  }
-
-  input {
-    width: 100%;
-    padding: 0.75rem;
     border: 1px solid #ffffff;
     border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .join-row input {
+    flex: 1;
+    padding: 0.75rem 1rem;
+    border: none;
+    border-radius: 0;
     font-size: 1rem;
     text-align: center;
     text-transform: uppercase;
     letter-spacing: 0.15em;
-    box-sizing: border-box;
     background: transparent;
     color: #ffffff;
-  }
-
-  input::placeholder {
-    color: #efefef;
-  }
-
-  input:focus {
     outline: none;
-    border-color: #ffffff;
   }
+
+  .join-row input::placeholder {
+    color: #cdcdcd;
+    text-transform: none;
+    letter-spacing: normal;
+  }
+
+  .arrow-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 3rem;
+    border: none;
+    border-left: 1px solid rgba(255, 255, 255, 0.3);
+    background: #ffffff;
+    color: #000000;
+    font-size: 1.25rem;
+    cursor: pointer;
+    transition: opacity 0.15s ease;
+  }
+
+  .arrow-btn:hover { opacity: 0.85; }
+  .arrow-btn:disabled { opacity: 0.8; cursor: default; }
 
   .error {
     color: #ffe7e2;

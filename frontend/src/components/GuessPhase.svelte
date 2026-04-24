@@ -1,5 +1,6 @@
 <script>
-  import { canvasCards, wordList, roomId, playersInfo, cardClaims, scores, wrongGuessCardId, submitCanvasGuess, errorMsg, finalScores, returnToLobby, endGame } from "../stores/gameStore.js";
+  import { canvasCards, wordList, roomId, playersInfo, cardClaims, scores, wrongGuessCardId, submitCanvasGuess, errorMsg, finalScores, returnToLobby, guessPhaseTime } from "../stores/gameStore.js";
+  import { onMount, onDestroy } from "svelte";
 
   let guessTexts = $state({});
   let showDropdowns = $state({});
@@ -21,6 +22,25 @@
       return () => clearInterval(interval);
     }
   });
+
+  // Timer state
+  let totalTime = $state(60);
+  let timeLeft = $state(60);
+  let timerInterval = null;
+
+  onMount(() => {
+    totalTime = $guessPhaseTime;
+    timeLeft = totalTime;
+    timerInterval = setInterval(() => {
+      timeLeft = Math.max(0, timeLeft - 0.05);
+    }, 50);
+  });
+
+  onDestroy(() => {
+    if (timerInterval) clearInterval(timerInterval);
+  });
+
+  let timerFraction = $derived(totalTime > 0 ? timeLeft / totalTime : 0);
 
   // Only show cards that aren't mine
   let otherCards = $derived($canvasCards.filter((c) => !c.is_mine));
@@ -62,6 +82,7 @@
   }
 </script>
 
+<div class="timer-bar" style="transform: scaleX({timerFraction});"></div>
 <div class="guess-phase">
   <div class="scoreboard">
     {#each $playersInfo as player}
@@ -157,6 +178,17 @@
 </div>
 
 <style>
+  .timer-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: #ffffff;
+    transform-origin: left;
+    z-index: 50;
+  }
+
   .guess-phase {
     display: flex;
     flex-direction: column;
