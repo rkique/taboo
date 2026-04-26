@@ -127,11 +127,13 @@
     border-radius: 8px;
     font-size: 1rem;
     cursor: pointer;
-    transition: opacity 0.15s ease;
+    transition: opacity 0.15s ease, transform 0.15s ease;
   }
 
   .btn:hover { opacity: 0.85; }
+  .btn:active { transform: scale(0.95); }
   .btn:disabled { opacity: 0.9; cursor: default; }
+  .btn:disabled:active { transform: none; }
 
   .primary {
     background: rgba(0, 0, 0, 0.35);
@@ -177,11 +179,13 @@
     color: #000000;
     font-size: 1.25rem;
     cursor: pointer;
-    transition: opacity 0.15s ease;
+    transition: opacity 0.15s ease, transform 0.15s ease;
   }
 
   .arrow-btn:hover { opacity: 0.85; }
+  .arrow-btn:active { transform: scale(0.9); }
   .arrow-btn:disabled { opacity: 0.8; cursor: default; }
+  .arrow-btn:disabled:active { transform: none; }
 
   .error {
     color: #ffe7e2;

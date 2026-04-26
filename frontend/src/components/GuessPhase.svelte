@@ -8,8 +8,8 @@
   let waitingForFinalScores = $state(false);
 
   // Timer state
-  let totalTime = $state(60);
-  let timeLeft = $state(60);
+  let totalTime = $state(90);
+  let timeLeft = $state(90);
   let timerInterval = null;
 
   onMount(() => {
@@ -32,10 +32,11 @@
   });
 
   let timerFraction = $derived(totalTime > 0 ? timeLeft / totalTime : 0);
+  let timerUrgent = $derived(timeLeft <= 15);
 
   // Only show cards that aren't mine
   let otherCards = $derived($canvasCards.filter((c) => !c.is_mine));
-  
+
   function filteredFor(cardId) {
     const q = (guessTexts[cardId] || "").trim().toLowerCase();
     if (!q) return [];
@@ -51,7 +52,6 @@
     }
   }
 
-  //User selects a card out of the dropdown.
   function selectWord(cardId, word) {
     guessTexts[cardId] = word;
     showDropdowns[cardId] = false;
@@ -59,7 +59,6 @@
     guessTexts[cardId] = "";
   }
 
-  //User inputs text.
   function handleInput(cardId) {
     showDropdowns[cardId] = (guessTexts[cardId] || "").trim().length > 0;
   }
@@ -73,7 +72,7 @@
   }
 </script>
 
-<div class="timer-bar" style="transform: scaleX({timerFraction});"></div>
+<div class="timer-bar" class:urgent={timerUrgent} style="transform: scaleX({timerFraction});"></div>
 <div class="guess-phase">
   <div class="scoreboard">
     {#each $playersInfo as player}
@@ -84,8 +83,6 @@
       </div>
     {/each}
   </div>
-
-  <div class="timer">Time left: {timeLeft}s</div>
 
   <div class="card-grid">
     {#each otherCards as card}
@@ -157,7 +154,7 @@
             {/each}
           </div>
         {:else}
-          <p class="loading">Waiting for final scores…</p>
+          <p class="loading">Waiting for final scores...</p>
         {/if}
 
         <button class="btn primary" onclick={() => returnToLobby($roomId)}>
@@ -174,29 +171,41 @@
     top: 0;
     left: 0;
     width: 100%;
-    height: 4px;
+    height: 8px;
     background: #ffffff;
     transform-origin: left;
     z-index: 50;
+    transition: background 0.3s;
+  }
+
+  .timer-bar.urgent {
+    background: #c0392b;
   }
 
   .guess-phase {
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
     min-height: 100vh;
     font-family: system-ui, sans-serif;
-    background: #faf8f5;
+    background: radial-gradient(ellipse 80% 90% at center, rgba(100, 10, 10, 0.95) 0%, rgba(0, 0, 0, 1) 100%);
     color: #2c2c2c;
-    padding: 1.5rem 1rem;
+    padding: 3.5rem 1rem 1.5rem;
   }
 
+
   .scoreboard {
+    position: fixed;
+    top: 8px;
+    left: 0;
+    right: 0;
     display: flex;
-    gap: 1rem;
+    gap: 0.5rem;
     flex-wrap: wrap;
     justify-content: center;
-    margin-bottom: 1.5rem;
+    padding: 0.5rem 1rem;
+    z-index: 40;
   }
 
   .score-chip {
@@ -224,13 +233,6 @@
   .chip-score {
     font-size: 1rem;
     font-weight: 700;
-  }
-
-  .timer {
-    font-size: 1.2rem;
-    font-weight: 600;
-    color: #2c2c2c;
-    margin-bottom: 1rem;
   }
 
   .card-grid {
@@ -356,10 +358,15 @@
     font-size: 0.8rem;
     cursor: pointer;
     color: #2c2c2c;
+    transition: transform 0.1s ease;
   }
 
   .dropdown li button:hover {
     background: #f0ede8;
+  }
+
+  .dropdown li button:active {
+    transform: scale(0.97);
   }
 
   .error {
@@ -446,10 +453,11 @@
     border-radius: 8px;
     font-size: 0.95rem;
     cursor: pointer;
-    transition: opacity 0.15s;
+    transition: opacity 0.15s, transform 0.15s ease;
   }
 
   .btn:hover { opacity: 0.85; }
+  .btn:active { transform: scale(0.95); }
 
   .primary {
     background: #2c2c2c;

@@ -212,10 +212,11 @@
     border-radius: 8px;
     font-size: 1rem;
     cursor: pointer;
-    transition: opacity 0.15s ease;
+    transition: opacity 0.15s ease, transform 0.15s ease;
   }
 
   .btn:hover { opacity: 0.85; }
+  .btn:active { transform: scale(0.95); }
 
   .primary {
     background: #ffffff;
@@ -249,8 +250,10 @@
     color: #ffffff;
     cursor: pointer;
     font-size: 0.9rem;
-    transition: all 0.15s;
+    transition: all 0.15s, transform 0.15s ease;
   }
+
+  .bot-btn:active { transform: scale(0.9); }
 
   .bot-btn.active {
     background: #ffffff;

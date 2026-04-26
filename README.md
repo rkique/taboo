@@ -74,8 +74,7 @@ Runs on `http://localhost:5001`.
 ### Frontend
 
 ```bash
-cd frontend
-npm install
+cd frontend && npm install
 npm run dev
 ```
 

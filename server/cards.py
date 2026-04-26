@@ -18,6 +18,9 @@ def load_cards(path=CSV_PATH):
         with open(path, newline="", encoding="utf-8") as f:
             reader = csv.DictReader(f)
             for row in reader:
+                difficulty = row.get("difficulty", "").strip().lower()
+                if difficulty != "easy":
+                    continue
                 word = row["name"].strip()
                 taboo_words = [
                     row[col].strip()

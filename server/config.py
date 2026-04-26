@@ -6,4 +6,4 @@ BOT_CLUES_PATH = os.path.join(os.path.dirname(__file__), "..", "data", "bot_clue
 MAX_PLAYERS_PER_ROOM = 50
 DEBUG_MODE = True
 CLUE_PHASE_TIME = 60        # seconds for the entire clue phase
-GUESS_PHASE_TIME = 60       # seconds for the entire guess phase
+GUESS_PHASE_TIME = 90       # seconds for the entire guess phase
