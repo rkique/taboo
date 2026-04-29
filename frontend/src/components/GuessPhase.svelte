@@ -12,6 +12,8 @@
   let timeLeft = $state(90);
   let timerInterval = null;
 
+  //onMount is called on page load.
+  //it sets interval : when gameEnded & nextTime, will end the game
   onMount(() => {
     totalTime = $guessPhaseTime;
     timeLeft = totalTime;
@@ -188,7 +190,6 @@
     flex-direction: column;
     align-items: center;
     min-height: 100vh;
-    font-family: system-ui, sans-serif;
     background: radial-gradient(ellipse 80% 90% at center, rgba(100, 10, 10, 0.95) 0%, rgba(0, 0, 0, 1) 100%);
     color: #2c2c2c;
     padding: 3.5rem 1rem 1.5rem;
@@ -231,6 +232,7 @@
   }
 
   .chip-score {
+    font-family: "Archivo Black", sans-serif;
     font-size: 1rem;
     font-weight: 700;
   }
@@ -398,6 +400,7 @@
   }
 
   .modal h3 {
+    font-family: "Archivo Black", sans-serif;
     margin: 0;
     font-size: 1.4rem;
   }
@@ -443,6 +446,7 @@
   }
 
   .modal-score {
+    font-family: "Archivo Black", sans-serif;
     font-size: 1.1rem;
     font-weight: 700;
   }

@@ -8,9 +8,8 @@
   let cardWobble = $state(false);
   let inputEl = $state(null);
   let focusCounter = $state(0);
-  let phaseEl = $state(null);
 
-  // Tap-to-start gate (needed for iOS Safari keyboard)
+  // Tap-to-start gate
   let started = $state(false);
 
   // 60s overall timer
@@ -19,10 +18,9 @@
   let timerInterval = null;
   let phaseOver = $state(false);
 
-  // Track visual viewport height for keyboard-aware sizing
+  // Mobile keyboard-aware height (only used on small screens)
+  let isMobile = $state(false);
   let vpHeight = $state(typeof window !== "undefined" ? window.innerHeight : 800);
-
-  // Extra height to let content flow behind the floating keyboard accessory bar
   const ACCESSORY_BAR_OVERLAP = 55;
 
   function onViewportResize() {
@@ -36,17 +34,22 @@
     }
   }
 
+  function preventScroll(e) {
+    e.preventDefault();
+  }
+
   // Focus input whenever it becomes available or focusCounter changes
-  //when inputEl or focusCounter is used.
   $effect(() => {
     const _el = inputEl;
     const _count = focusCounter;
     if (_el) {
       tick().then(() => {
-        _el.focus({ preventScroll: true });
-        window.scrollTo(0, 0);
-        document.documentElement.scrollTop = 0;
-        document.body.scrollTop = 0;
+        _el.focus({ preventScroll: isMobile });
+        if (isMobile) {
+          window.scrollTo(0, 0);
+          document.documentElement.scrollTop = 0;
+          document.body.scrollTop = 0;
+        }
       });
     }
   });
@@ -86,39 +89,36 @@
     }, 50);
   }
 
-  // Prevent any scroll on this page
-  function preventScroll(e) {
-    e.preventDefault();
-  }
-
   onMount(() => {
+    isMobile = window.matchMedia("(max-width: 768px)").matches;
     pickNextCard();
 
-    // Listen to visual viewport for keyboard resize
-    if (window.visualViewport) {
-      window.visualViewport.addEventListener("resize", onViewportResize);
-      window.visualViewport.addEventListener("scroll", onViewportResize);
+    if (isMobile) {
+      if (window.visualViewport) {
+        window.visualViewport.addEventListener("resize", onViewportResize);
+        window.visualViewport.addEventListener("scroll", onViewportResize);
+      }
+      document.body.style.overflow = "hidden";
+      document.body.style.position = "fixed";
+      document.body.style.width = "100%";
+      document.body.style.height = "100%";
+      document.addEventListener("touchmove", preventScroll, { passive: false });
     }
-
-    // Lock body scroll
-    document.body.style.overflow = "hidden";
-    document.body.style.position = "fixed";
-    document.body.style.width = "100%";
-    document.body.style.height = "100%";
-    document.addEventListener("touchmove", preventScroll, { passive: false });
   });
 
   onDestroy(() => {
     if (timerInterval) clearInterval(timerInterval);
-    if (window.visualViewport) {
-      window.visualViewport.removeEventListener("resize", onViewportResize);
-      window.visualViewport.removeEventListener("scroll", onViewportResize);
+    if (isMobile) {
+      if (window.visualViewport) {
+        window.visualViewport.removeEventListener("resize", onViewportResize);
+        window.visualViewport.removeEventListener("scroll", onViewportResize);
+      }
+      document.body.style.overflow = "";
+      document.body.style.position = "";
+      document.body.style.width = "";
+      document.body.style.height = "";
+      document.removeEventListener("touchmove", preventScroll);
     }
-    document.body.style.overflow = "";
-    document.body.style.position = "";
-    document.body.style.width = "";
-    document.body.style.height = "";
-    document.removeEventListener("touchmove", preventScroll);
   });
 
   let timerFraction = $derived(totalTime > 0 ? timeLeft / totalTime : 0);
@@ -142,16 +142,18 @@
   }
 </script>
 
-<div class="clue-phase" bind:this={phaseEl} style="height: {vpHeight}px;">
+<!-- Main bind for phase -->
+<div class="clue-phase" style={isMobile ? `height: ${vpHeight}px;` : ''}>
   {#if !started}
     <div class="tap-gate" onclick={startPhase}>
       <div class="tap-content">
-        <h2>Ready?</h2>
+        <div class="tap-text">
+        <h2>Guess Phase</h2>
         <p class="tap-hint">Tap to start writing clues</p>
+        </div>
         <div class="tap-circle">
           <span>GO</span>
         </div>
-        <p class="tap-time">{$cluePhaseTime}s on the clock</p>
       </div>
     </div>
   {:else if phaseOver}
@@ -165,17 +167,21 @@
 
     <div class="card" class:card-enter={cardWobble}>
       <div class="target-word">{currentCard.word}</div>
-      <div class="taboo-label">TABOO</div>
+      <div class="taboo-label">
+        <span class="scroll-line"></span>
+        <span class="taboo-text">Taboo</span>
+        <span class="scroll-line"></span>
+      </div>
       <ul class="taboo-words">
         {#each currentCard.taboo_words.slice(0, 3) as word}
           <li>{word}</li>
         {/each}
       </ul>
+      <button class="skip-link" onmousedown={(e) => e.preventDefault()} onclick={handleSkip}>skip</button>
     </div>
 
     <div class="bottom-row">
       <p class="progress-label">{$cluesDone} clue{$cluesDone !== 1 ? 's' : ''} written</p>
-      <button class="skip-link" onmousedown={(e) => e.preventDefault()} onclick={handleSkip}>skip</button>
     </div>
 
     <div class="input-row">
@@ -203,6 +209,7 @@
 </div>
 
 <style>
+  /* Mobile: fixed, viewport-height layout */
   .clue-phase {
     position: fixed;
     top: 0;
@@ -211,13 +218,24 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    font-family: "Avenir Next", "Gill Sans", "Trebuchet MS", sans-serif;
     background: radial-gradient(ellipse 80% 90% at center, rgba(100, 10, 10, 0.95) 0%, rgba(40, 0, 0, 1) 100%);
     color: #ffffff;
     padding: 0 0.5rem;
     box-sizing: border-box;
     overflow: hidden;
     touch-action: none;
+  }
+
+  /* Desktop: centered flex layout */
+  @media (min-width: 769px) {
+    .clue-phase {
+      position: static;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 1rem 0.5rem;
+      overflow: visible;
+      touch-action: auto;
+    }
   }
 
   /* Timer bar */
@@ -236,6 +254,7 @@
 
   /* Card */
   .card {
+    position: relative;
     background: rgba(255, 255, 255, 0.08);
     border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 12px;
@@ -257,21 +276,37 @@
   }
 
   .target-word {
+    font-family: "Archivo Black", sans-serif;
     font-size: 1.4rem;
-    font-weight: 700;
+    font-weight: 400;
     margin-bottom: 0.5rem;
     color: #ffffff;
   }
 
   .taboo-label {
-    font-size: 0.6rem;
-    font-weight: 700;
-    letter-spacing: 0.15em;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 0.4rem;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .taboo-text {
+    font-family: "Times New Roman", "Georgia", serif;
+    font-size: 0.7rem;
+    font-weight: 400;
+    font-style: italic;
+    letter-spacing: 0.08em;
     color: rgba(255, 255, 255, 0.4);
-    text-transform: uppercase;
-    margin-bottom: 0.3rem;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
-    padding-bottom: 0.3rem;
+    white-space: nowrap;
+  }
+
+  .scroll-line {
+    flex: 1;
+    max-width: 50px;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.15);
   }
 
   .taboo-words {
@@ -280,17 +315,18 @@
     margin: 0;
     display: flex;
     flex-direction: column;
-    gap: 0.15rem;
+    gap: 0.3rem;
   }
 
   .taboo-words li {
     color: #ffffff;
-    font-size: 1.1rem;
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 1.5rem;
     font-variant: small-caps;
     font-weight: 600;
   }
 
-  /* Bottom row: progress + skip */
+  /* Bottom row: progress */
   .bottom-row {
     display: flex;
     align-items: center;
@@ -307,10 +343,13 @@
   }
 
   .skip-link {
+    position: absolute;
+    bottom: 0.5rem;
+    right: 0.75rem;
     background: none;
     border: none;
     color: rgba(255, 255, 255, 0.45);
-    font-size: 0.75rem;
+    font-size: 0.9rem;
     cursor: pointer;
     text-decoration: underline;
     text-underline-offset: 2px;
@@ -403,17 +442,26 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 0.75rem;
+    gap: 2rem;
+  }
+
+  .tap-text {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
   }
 
   .tap-content h2 {
-    font-size: 2rem;
+    font-family: "Archivo Black", sans-serif;
+    font-weight: 300;
+    font-size: 2.2rem;
     margin: 0;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
+    letter-spacing: 0.1em;
   }
 
   .tap-hint {
+    font-family: 'Instrument Sans', sans-serif;
     color: rgba(255, 255, 255, 0.5);
     font-size: 0.9rem;
     margin: 0;
@@ -427,11 +475,11 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 0.5rem 0;
     animation: pulse-ring 1.5s ease-in-out infinite;
   }
 
   .tap-circle span {
+    font-family: "Archivo Black", sans-serif;
     font-size: 1.4rem;
     font-weight: 700;
     letter-spacing: 0.1em;

@@ -55,6 +55,17 @@
       <span class="code">{$roomId}</span>
     </div>
 
+<!-- 
+    <div class="player-count">
+      {$players.length} player{$players.length !== 1 ? "s" : ""} connected
+    </div> -->
+
+    <ul class="player-list">
+      {#each $players as p}
+        <li>{p.name}</li>
+      {/each}
+    </ul>
+
     <div class="your-name">
       {#if editing}
         <input
@@ -72,16 +83,6 @@
         <button class="edit-btn" onclick={startEditing}>edit</button>
       {/if}
     </div>
-
-    <div class="player-count">
-      {$players.length} player{$players.length !== 1 ? "s" : ""} connected
-    </div>
-
-    <ul class="player-list">
-      {#each $players as p}
-        <li>{p.name}</li>
-      {/each}
-    </ul>
 
     {#if $isLeader}
       <div class="bot-selector">
@@ -154,7 +155,6 @@
     justify-content: center;
     min-height: 100vh;
     padding: 1.5rem;
-    font-family: "Avenir Next", "Gill Sans", "Trebuchet MS", sans-serif;
     background: url("/images/eniko_eged_2.jpg") center center / cover no-repeat;
     color: #ffffff;
     overflow: hidden;
@@ -179,9 +179,8 @@
   }
 
   h2 {
-    font-size: 2.5rem;
+    font-size: 2.8rem;
     margin: 0;
-    text-transform: uppercase;
     letter-spacing: 0.05em;
   }
 
@@ -200,6 +199,7 @@
   }
 
   .code {
+    font-family: "Archivo Black", sans-serif;
     font-size: 2.5rem;
     font-weight: 700;
     letter-spacing: 0.2em;
@@ -352,8 +352,9 @@
 
   .filter-label {
     font-size: 0.75rem;
-    color: rgba(255, 255, 255, 0.5);
-    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.7);
+    font-family: 'Instrument Sans', sans-serif;
+    text-transform: lowercase;
     letter-spacing: 0.08em;
   }
 
@@ -368,6 +369,7 @@
     align-items: center;
     gap: 0.3rem;
     padding: 0.3rem 0.65rem;
+    font-family: "Instrument Sans", sans-serif;
     border: 1px solid rgba(255, 255, 255, 0.25);
     border-radius: 20px;
     font-size: 0.85rem;

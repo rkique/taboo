@@ -132,7 +132,8 @@ socket.on("returned_to_lobby", (data) => {
   screen.set("lobby");
 });
 
-// --- Actions ---
+// --- Actions --- 
+// Each action maps a javascript function to a backend socket.io request.
 export function createRoom() {
   socket.emit("create_room", {});
 }
@@ -167,4 +168,26 @@ export function renameSelf(id, name) {
 
 export function endGame(id) {
   socket.emit("end_game", { room_id: id });
+}
+
+// --- Static prototyping ---
+const STATIC_CARDS = [
+  { word: "Basketball", taboo_words: ["Sport", "Ball", "Hoop", "NBA", "Court"] },
+  { word: "Eiffel Tower", taboo_words: ["Paris", "France", "Iron", "Tall", "Landmark"] },
+  { word: "Einstein", taboo_words: ["Relativity", "Physics", "Genius", "Hair", "Science"] },
+  { word: "Pizza", taboo_words: ["Cheese", "Italy", "Slice", "Pepperoni", "Dough"] },
+  { word: "Amazon", taboo_words: ["River", "Rainforest", "Brazil", "Online", "Bezos"] },
+  { word: "Guitar", taboo_words: ["Strings", "Music", "Rock", "Strum", "Acoustic"] },
+  { word: "Mount Everest", taboo_words: ["Tallest", "Nepal", "Climb", "Summit", "Himalaya"] },
+  { word: "Cleopatra", taboo_words: ["Egypt", "Queen", "Pharaoh", "Nile", "Ancient"] },
+];
+
+export function setupStaticCluePhase() {
+  allCards.set(STATIC_CARDS);
+  wordList.set(STATIC_CARDS.map((c) => c.word));
+  cluesDone.set(0);
+  cluePhaseTime.set(60);
+  roomId.set("DEMO");
+  playerName.set("Prototyper");
+  screen.set("clue");
 }

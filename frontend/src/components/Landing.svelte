@@ -23,7 +23,7 @@
     <h1>T@b00</h1>
     <div class="how-to">
       <p> Describe words without using t@boos.</p>
-      <p> Compete with others to guess words.</p>
+      <p> Compete with others to guess them first.</p>
       </div>
 
     <div class="actions">
@@ -49,7 +49,7 @@
       <p class="error">{$errorMsg}</p>
     {/if}
   </div>
-  <footer class="credit">backgrounds by eniko eged</footer>
+  <footer class="credit">By Eric Xia </footer>
 </div>
 
 <style>
@@ -61,7 +61,6 @@
     justify-content: center;
     min-height: 100vh;
     padding: 1.5rem;
-    font-family: "Avenir Next", "Gill Sans", "Trebuchet MS", sans-serif;
     background: url("/images/eniko_eged.webp") center center / cover no-repeat;
     color: #ffffff;
     overflow: hidden;
@@ -94,22 +93,22 @@
   .how-to {
     max-width: 360px;
     text-align: center;
-    margin-bottom: 1.5rem;
+    margin: 1em 1em 1em 1em;
     color: #ffffff;
-    font-variant:small-caps;
-    font-size: 1.15rem;
+    /* font-variant:small-caps; */
+    font-size: 1.3em;
     font-weight: 600;
-    line-height: 1.6;
+    line-height: 1.3;
   }
 
   .how-to p {
-    margin: 0.5rem 0;
+    margin: 0rem 0;
   }
 
   .how-to .tagline {
     margin-top: 0.75rem;
     text-align: center;
-    font-weight: 600;
+    font-weight: 300;
     color: #ffffff;
   }
 
@@ -157,7 +156,7 @@
     font-size: 1rem;
     text-align: center;
     text-transform: uppercase;
-    letter-spacing: 0.15em;
+    letter-spacing: 2px;
     background: transparent;
     color: #ffffff;
     outline: none;
@@ -195,6 +194,7 @@
   }
 
   .credit {
+    font-family: 'Instrument Sans', sans-serif;
     position: absolute;
     bottom: 1rem;
     left: 0;
