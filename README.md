@@ -1,9 +1,6 @@
 # T@b00
 
-A real-time multiplayer word-guessing game inspired by Taboo and Blather Round.
-
-This is more party-gamesque than I'd typically like. But lots of interesting problems. 
-Made for LING0130: Linguistic Principles Behind Word Games and Puzzles.
+A real-time multiplayer word-guessing game inspired by Taboo (Parker Brothers) and Blather Round (JackBox Games). This is more party-gamesque than I'd typically like to make. But there are a lot of interesting problems here. The main one is translating typically oral interactions to written settings. The game tries to preserve a sense of urgency in messages, while simultaneously allowing players to bet on shared mental lexicons. Made for LING0130: Linguistic Principles Behind Word Games and Puzzles.
 
 <img src="taboo_original.jpg" width="300">
 
