@@ -200,7 +200,7 @@
     left: 0;
     right: 0;
     text-align: center;
-    font-size: 0.65rem;
+    font-size: 0.8rem;
     color: rgba(255, 255, 255, 0.7);
     letter-spacing: 0.05em;
     z-index: 1;
