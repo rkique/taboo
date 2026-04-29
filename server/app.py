@@ -1,3 +1,7 @@
+"""
+Main Flask application for the Taboo game server.
+"""
+
 import os
 from flask import Flask, jsonify, send_from_directory
 from flask_socketio import SocketIO

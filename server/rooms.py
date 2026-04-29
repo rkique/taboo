@@ -5,6 +5,8 @@ from names import generate_name
 
 _rooms = {}
 
+from typing import dict, tuple
+
 PLAYER_COLORS = [
     "#e74c3c",  # red
     "#3498db",  # blue
@@ -16,8 +18,7 @@ PLAYER_COLORS = [
     "#e84393",  # pink
 ]
 
-
-def create_room(leader_sid):
+def create_room(leader_sid: str) -> tuple[int, dict]:
     """Create a new room and return (room_id, room)."""
     room_id = str(random.randint(1000, 9999))
     room = {
@@ -37,17 +38,15 @@ def create_room(leader_sid):
     _rooms[room_id] = room
     return room_id, room
 
-
 def get_room(room_id):
     return _rooms.get(room_id)
 
 
 def delete_room(room_id):
-    _rooms.pop(room_id, None)
+    _rooms.pop(room_id, None) #don't care about output
 
 
 def add_player(room_id, sid):
-    """Add a player to a room. Returns (player_info, error_message)."""
     room = get_room(room_id)
     if not room:
         return None, "Room not found."
@@ -55,7 +54,7 @@ def add_player(room_id, sid):
         return None, "Game already in progress."
     if len(room["players"]) >= 50:
         return None, "Room is full (max 50 players)."
-
+    
     player_id = room["next_player_id"]
     room["next_player_id"] += 1
     info = {"id": player_id, "name": generate_name()}
@@ -84,7 +83,6 @@ def remove_player(sid):
             return room_id, room
     return None, None
 
-
 def init_game(room_id):
     """Initialize game state: colors, order, empty canvas. Cards added as clues come in."""
     room = get_room(room_id)
@@ -110,7 +108,6 @@ def add_clued_card(room_id, sid, card, clue_text):
     count = room["clue_counter"].get(sid, 0)
     card_id = f"{sid}_{count}"
     room["clue_counter"][sid] = count + 1
-
     room["canvas_cards"].append({
         "card_id": card_id,
         "card": card,
@@ -128,7 +125,6 @@ def add_clued_card(room_id, sid, card, clue_text):
 def check_canvas_guess(room_id, sid, card_id, guess_text):
     """Check a guess against the target word. Returns (is_correct, scores_dict).
     If correct, records the claim. Does not store wrong guesses.
-    Scoring: 100 pts to guesser, plus owner bonus based on time elapsed.
     """
     room = get_room(room_id)
     if not room:
@@ -155,15 +151,12 @@ def check_canvas_guess(room_id, sid, card_id, guess_text):
         # 100 pts for guessing correctly
         room["correct_counts"][sid] = room["correct_counts"].get(sid, 0) + 100
 
-        # Owner bonus based on time since guess phase started
+        # Owner bonus: 10 tiers across guess phase, stepping down by 10
+        from config import GUESS_PHASE_TIME
         owner_sid = target_card["owner_sid"]
         elapsed = time.time() - room.get("guess_phase_start", time.time())
-        if elapsed <= 5:
-            bonus = 100
-        elif elapsed <= 15:
-            bonus = 50
-        else:
-            bonus = 25
+        tier = min(int(elapsed / (GUESS_PHASE_TIME / 10)), 9)
+        bonus = 100 - tier * 10
         room["correct_counts"][owner_sid] = room["correct_counts"].get(owner_sid, 0) + bonus
 
     return is_correct, dict(room["correct_counts"])

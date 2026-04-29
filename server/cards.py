@@ -1,3 +1,7 @@
+'''
+Functions to load taboo cards and bot clues from CSV files.
+'''
+
 import csv
 import os
 from config import CSV_PATH, BOT_CLUES_PATH

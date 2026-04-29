@@ -49,6 +49,7 @@
       <p class="error">{$errorMsg}</p>
     {/if}
   </div>
+  <footer class="credit">backgrounds by eniko eged</footer>
 </div>
 
 <style>
@@ -191,5 +192,17 @@
     color: #ffe7e2;
     margin-top: 1rem;
     font-size: 0.9rem;
+  }
+
+  .credit {
+    position: absolute;
+    bottom: 1rem;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-size: 0.65rem;
+    color: rgba(255, 255, 255, 0.7);
+    letter-spacing: 0.05em;
+    z-index: 1;
   }
 </style>

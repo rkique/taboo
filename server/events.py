@@ -5,7 +5,7 @@ from flask_socketio import join_room, leave_room, emit
 import rooms
 from config import DEBUG_MODE, CLUE_PHASE_TIME, GUESS_PHASE_TIME
 
-
+# Transition a room from clue phase to guess phase, and start the guess phase timer.
 def _transition_to_guess(socketio, room_id):
     """Transition a room from clue phase to guess phase."""
     room = rooms.get_room(room_id)
@@ -15,7 +15,6 @@ def _transition_to_guess(socketio, room_id):
     room["state"] = "guess_phase"
     room["guess_phase_start"] = time.time()
 
-    # Build players_info for layout
     players_info = []
     for s in room["player_order"]:
         players_info.append({
@@ -24,7 +23,6 @@ def _transition_to_guess(socketio, room_id):
             "color": room["player_colors"].get(s, "#888"),
         })
 
-    # Build canvas payload per player (only cards with real clues)
     all_players = list(room["players"].keys())
     for player_sid in all_players:
         player_canvas = []

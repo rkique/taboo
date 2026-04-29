@@ -125,7 +125,7 @@
 
   function handleSubmit() {
     if (clueText.trim() && currentCard && !phaseOver) {
-      submitClue($roomId, currentCard.word, currentCard.taboo_words, clueText.trim());
+      submitClue($roomId, currentCard.word, currentCard.taboo_words.slice(0, 3), clueText.trim());
       pickNextCard();
     }
   }
