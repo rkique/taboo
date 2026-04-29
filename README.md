@@ -1,6 +1,10 @@
 # T@b00
 
-A real-time multiplayer word-guessing game inspired by Taboo. This is more party-gamesque than we'd typically like, but has more potential for liftoff.
+A real-time multiplayer word-guessing game inspired by Taboo and Blather Round.
+
+This is more party-gamesque than I'd typically like. But lots of interesting problems. 
+Made for LING0130: Linguistic Principles Behind Word Games and Puzzles.
+
 <img src="taboo_original.jpg" width="300">
 
 ## Gameplay
