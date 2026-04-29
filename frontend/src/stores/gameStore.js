@@ -141,8 +141,8 @@ export function joinRoom(id) {
   socket.emit("join_room", { room_id: id });
 }
 
-export function startGame(id) {
-  socket.emit("start_game", { room_id: id });
+export function startGame(id, filters = {}) {
+  socket.emit("start_game", { room_id: id, ...filters });
 }
 
 export function submitClue(id, word, tabooWords, clue) {

@@ -16,27 +16,45 @@ def load_cards(path=CSV_PATH):
     """Load taboo cards from blather_round_taboo.csv.
 
     Expected CSV columns: name, category, difficulty, taboo_1..taboo_5
+    Returns cards with category and difficulty metadata for filtering.
     """
     cards = []
     if os.path.exists(path):
         with open(path, newline="", encoding="utf-8") as f:
             reader = csv.DictReader(f)
             for row in reader:
-                difficulty = row.get("difficulty", "").strip().lower()
-                if difficulty != "easy":
-                    continue
                 word = row["name"].strip()
+                category = row.get("category", "").strip().lower()
+                difficulty = row.get("difficulty", "").strip().lower()
                 taboo_words = [
                     row[col].strip()
                     for col in ("taboo_1", "taboo_2", "taboo_3", "taboo_4", "taboo_5")
                     if row.get(col, "").strip()
                 ]
-                cards.append({"word": word, "taboo_words": taboo_words})
+                cards.append({
+                    "word": word,
+                    "taboo_words": taboo_words,
+                    "category": category,
+                    "difficulty": difficulty,
+                })
 
     if not cards:
         cards.append(FALLBACK_CARD)
 
     return cards
+
+
+def filter_cards(cards, difficulties=None, categories=None):
+    """Filter cards by difficulty and category lists.
+
+    If a filter list is empty/None, that filter is not applied (all pass).
+    """
+    filtered = cards
+    if difficulties:
+        filtered = [c for c in filtered if c.get("difficulty") in difficulties]
+    if categories:
+        filtered = [c for c in filtered if c.get("category") in categories]
+    return filtered if filtered else [FALLBACK_CARD]
 
 
 def load_bot_clues(path=BOT_CLUES_PATH):

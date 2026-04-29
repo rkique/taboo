@@ -5,7 +5,7 @@ from names import generate_name
 
 _rooms = {}
 
-from typing import dict, tuple
+from typing import Dict, Tuple
 
 PLAYER_COLORS = [
     "#e74c3c",  # red

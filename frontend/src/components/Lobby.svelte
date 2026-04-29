@@ -4,6 +4,15 @@
   let editing = $state(false);
   let nameInput = $state("");
   let botCount = $state(0);
+  let showOptions = $state(false);
+
+  // Filter state — all checked by default
+  let diffEasy = $state(true);
+  let diffMedium = $state(true);
+  let diffHard = $state(false);
+  let catPeople = $state(true);
+  let catPlaces = $state(true);
+  let catThings = $state(true);
 
   function startEditing() {
     nameInput = $playerName || "";
@@ -21,6 +30,20 @@
   function handleKeydown(e) {
     if (e.key === "Enter") saveName();
     if (e.key === "Escape") editing = false;
+  }
+
+  function getFilters() {
+    const difficulties = [];
+    if (diffEasy) difficulties.push("easy");
+    if (diffMedium) difficulties.push("medium");
+    if (diffHard) difficulties.push("hard");
+
+    const categories = [];
+    if (catPeople) categories.push("person");
+    if (catPlaces) categories.push("place");
+    if (catThings) categories.push("thing");
+
+    return { difficulties, categories };
   }
 </script>
 
@@ -71,7 +94,45 @@
           >{n}</button>
         {/each}
       </div>
-      <button class="btn primary" onclick={() => startGame($roomId)}>
+
+      <button class="btn options-toggle" onclick={() => showOptions = !showOptions}>
+        {showOptions ? "Hide Options" : "Options"}
+      </button>
+
+      {#if showOptions}
+        <div class="options-panel">
+          <div class="filter-group">
+            <span class="filter-label">Difficulty</span>
+            <div class="filter-row">
+              <label class="chip" class:checked={diffEasy}>
+                <input type="checkbox" bind:checked={diffEasy} /> Easy
+              </label>
+              <label class="chip" class:checked={diffMedium}>
+                <input type="checkbox" bind:checked={diffMedium} /> Medium
+              </label>
+              <label class="chip" class:checked={diffHard}>
+                <input type="checkbox" bind:checked={diffHard} /> Hard
+              </label>
+            </div>
+          </div>
+          <div class="filter-group">
+            <span class="filter-label">Category</span>
+            <div class="filter-row">
+              <label class="chip" class:checked={catPeople}>
+                <input type="checkbox" bind:checked={catPeople} /> People
+              </label>
+              <label class="chip" class:checked={catPlaces}>
+                <input type="checkbox" bind:checked={catPlaces} /> Places
+              </label>
+              <label class="chip" class:checked={catThings}>
+                <input type="checkbox" bind:checked={catThings} /> Things
+              </label>
+            </div>
+          </div>
+        </div>
+      {/if}
+
+      <button class="btn primary" onclick={() => startGame($roomId, getFilters())}>
         Start Game
       </button>
     {:else}
@@ -264,5 +325,65 @@
   .error {
     color: #ffe7e2;
     font-size: 0.9rem;
+  }
+
+  .options-toggle {
+    background: transparent;
+    color: #ffffff;
+    font-size: 0.9rem;
+  }
+
+  .options-panel {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 0.75rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    background: rgba(0, 0, 0, 0.3);
+  }
+
+  .filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  .filter-label {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.5);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .filter-row {
+    display: flex;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+  }
+
+  .chip {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.3rem 0.65rem;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 20px;
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.6);
+    cursor: pointer;
+    transition: all 0.15s;
+    user-select: none;
+  }
+
+  .chip input[type="checkbox"] {
+    display: none;
+  }
+
+  .chip.checked {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: #ffffff;
+    color: #ffffff;
   }
 </style>

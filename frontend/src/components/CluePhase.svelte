@@ -37,6 +37,7 @@
   }
 
   // Focus input whenever it becomes available or focusCounter changes
+  //when inputEl or focusCounter is used.
   $effect(() => {
     const _el = inputEl;
     const _count = focusCounter;

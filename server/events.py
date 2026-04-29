@@ -174,6 +174,7 @@ def register(socketio):
     @socketio.on("start_game")
     def on_start_game(data):
         from app import CARDS
+        from cards import filter_cards
         sid = request.sid
         room_id = data.get("room_id", "").strip().upper()
         room = rooms.get_room(room_id)
@@ -185,20 +186,25 @@ def register(socketio):
             emit("error", {"message": "Only the leader can start the game."})
             return
 
+        # Apply card filters from lobby options
+        difficulties = data.get("difficulties", [])
+        categories = data.get("categories", [])
+        filtered = filter_cards(CARDS, difficulties, categories)
+
         rooms.init_game(room_id)
-        room["all_words"] = [c["word"] for c in CARDS]
+        room["all_words"] = [c["word"] for c in filtered]
         room["state"] = "clue_phase"
         room["clues"] = {}
 
         # Auto-submit clues for bots (4 random cards each)
         bot_sids = room.get("bots", [])
         for bot_sid in bot_sids:
-            bot_cards = random.sample(CARDS, min(4, len(CARDS)))
+            bot_cards = random.sample(filtered, min(4, len(filtered)))
             for card in bot_cards:
                 rooms.add_clued_card(room_id, bot_sid, card, card["word"])
 
         # Send the full card pool to each real player — they pick random cards locally
-        all_cards_data = [{"word": c["word"], "taboo_words": c["taboo_words"]} for c in CARDS]
+        all_cards_data = [{"word": c["word"], "taboo_words": c["taboo_words"]} for c in filtered]
         for player_sid in room["players"]:
             if player_sid in bot_sids:
                 continue
