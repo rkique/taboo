@@ -10,7 +10,7 @@
   let diffEasy = $state(true);
   let diffMedium = $state(true);
   let diffHard = $state(false);
-  let catPeople = $state(true);
+  let catPeople = $state(false);
   let catPlaces = $state(true);
   let catThings = $state(true);
 
